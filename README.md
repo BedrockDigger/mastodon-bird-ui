@@ -152,7 +152,7 @@ The following instances have enabled Mastodon Bird UI for their users, based on 
 
 ## Installation for Mastodon instance admins
 
-1. Copy the contents of `dist/layout-single-column.css` and `dist/layout-multiple-columns.css` and paste them (or one of them) to the **Custom CSS** in the Appearance settings in your instance (https://_yourinstance_/admin/settings/appearance). It might be recommended using the single layout CSS as "base" and use the advanced view CSS with browser extension (as it's desktop only anyway).
+1. Copy the contents of `dist/mastodon-bird-ui.css` and paste it to the **Custom CSS** in the Appearance settings in your instance (https://_yourinstance_/admin/settings/appearance). This single file covers both single-column and multiple-columns (advanced web interface) layouts.
 
 ![Screen-Shot-2023-03-31-13-25-52](https://user-images.githubusercontent.com/1534150/229111630-c8975708-134b-4887-b259-a87857193387.png)
 
@@ -177,23 +177,20 @@ export MASTODON_VERSION_FOR_BIRD_UI="main"
 # Create a new folder for the theme
 mkdir -p app/javascript/styles/mastodon-bird-ui
 
-# Download the CSS file for single column layout
-wget -N --no-check-certificate --no-cache --no-cookies --no-http-keep-alive https://raw.githubusercontent.com/ronilaukkarinen/mastodon-bird-ui/$MASTODON_VERSION_FOR_BIRD_UI/dist/layout-single-column.css -O app/javascript/styles/mastodon-bird-ui/layout-single-column.scss
-
-# Download the CSS file for multiple column layout
-wget -N --no-check-certificate --no-cache --no-cookies --no-http-keep-alive https://raw.githubusercontent.com/ronilaukkarinen/mastodon-bird-ui/$MASTODON_VERSION_FOR_BIRD_UI/dist/layout-multiple-columns.css -O app/javascript/styles/mastodon-bird-ui/layout-multiple-columns.scss
+# Download the CSS file
+wget -N --no-check-certificate --no-cache --no-cookies --no-http-keep-alive https://raw.githubusercontent.com/ronilaukkarinen/mastodon-bird-ui/$MASTODON_VERSION_FOR_BIRD_UI/dist/mastodon-bird-ui.css -O app/javascript/styles/mastodon-bird-ui/mastodon-bird-ui.scss
 
 # Replace theme-contrast with theme-mastodon-bird-ui-contrast and theme-mastodon-light with theme-mastodon-bird-ui-light
-sed -i -e 's/theme-contrast/theme-mastodon-bird-ui-contrast/g' -e 's/theme-mastodon-light/theme-mastodon-bird-ui-light/g' app/javascript/styles/mastodon-bird-ui/layout-single-column.scss app/javascript/styles/mastodon-bird-ui/layout-multiple-columns.scss
+sed -i -e 's/theme-contrast/theme-mastodon-bird-ui-contrast/g' -e 's/theme-mastodon-light/theme-mastodon-bird-ui-light/g' app/javascript/styles/mastodon-bird-ui/mastodon-bird-ui.scss
 
 # Create high contrast theme file
-echo -e "@use 'contrast/variables';\n@use 'application';\n@use 'contrast/diff';\n@use 'mastodon-bird-ui/layout-single-column.scss';\n@use 'mastodon-bird-ui/layout-multiple-columns.scss';" > app/javascript/styles/mastodon-bird-ui-contrast.scss
+echo -e "@use 'contrast/variables';\n@use 'application';\n@use 'contrast/diff';\n@use 'mastodon-bird-ui/mastodon-bird-ui.scss';" > app/javascript/styles/mastodon-bird-ui-contrast.scss
 
 # Create light theme file
-echo -e "@use 'mastodon-light/variables';\n@use 'application';\n@use 'mastodon-light/diff';\n@use 'mastodon-bird-ui/layout-single-column.scss';\n@use 'mastodon-bird-ui/layout-multiple-columns.scss';" > app/javascript/styles/mastodon-bird-ui-light.scss
+echo -e "@use 'mastodon-light/variables';\n@use 'application';\n@use 'mastodon-light/diff';\n@use 'mastodon-bird-ui/mastodon-bird-ui.scss';" > app/javascript/styles/mastodon-bird-ui-light.scss
 
 # Create dark theme file
-echo -e "@use 'application';\n@use 'mastodon-bird-ui/layout-single-column.scss';\n@use 'mastodon-bird-ui/layout-multiple-columns.scss';" > app/javascript/styles/mastodon-bird-ui-dark.scss
+echo -e "@use 'application';\n@use 'mastodon-bird-ui/mastodon-bird-ui.scss';" > app/javascript/styles/mastodon-bird-ui-dark.scss
 
 # Overwrite config/themes.yml with new settings, Mastodon Bird UI dark as default
 echo -e "default: styles/mastodon-bird-ui-dark.scss\nmastodon-bird-ui-light: styles/mastodon-bird-ui-light.scss\nmastodon-bird-ui-contrast: styles/mastodon-bird-ui-contrast.scss\nmastodon-dark: styles/application.scss\nmastodon-light: styles/mastodon-light.scss\ncontrast: styles/contrast.scss" > config/themes.yml
@@ -240,8 +237,8 @@ And you're done!
 ## Installation for regular users, contributing and testing
 
 1. Install [Live CSS Editor](https://github.com/webextensions/live-css-editor) (or any other extension like [Stylus](https://chrome.google.com/webstore/detail/stylus/clngdbkpkpeebahjckkjfobafhncgmne?hl=en) that allows you to inject CSS into web pages) or use [Unite for macOS](https://www.bzgapps.com/unite) or use the [user.js by eg](https://ieji.de/@eg/110174544387143309)
-2. Copy the contents of `dist/layout-single-column.css` and `dist/layout-multiple-columns.css`
-3. Open extension and paste the contents of both CSS files into the editor
+2. Copy the contents of `dist/mastodon-bird-ui.css`
+3. Open extension and paste the CSS into the editor
 4. If you use Live CSS Editor, click 📌-icon so the styles will be remembered for the domain or if you want just to use it as needed, activate styles from the extension's popup
 
 ## Development
@@ -297,14 +294,11 @@ If you are using Mastodon Bird UI as option, get the latest changes to your inst
 ```bash
 export MASTODON_VERSION_FOR_BIRD_UI="main"
 
-# Download the CSS file for single column layout
-wget -N --no-check-certificate --no-cache --no-cookies --no-http-keep-alive https://raw.githubusercontent.com/ronilaukkarinen/mastodon-bird-ui/$MASTODON_VERSION_FOR_BIRD_UI/dist/layout-single-column.css -O app/javascript/styles/mastodon-bird-ui/layout-single-column.scss
-
-# Download the CSS file for multiple column layout
-wget -N --no-check-certificate --no-cache --no-cookies --no-http-keep-alive https://raw.githubusercontent.com/ronilaukkarinen/mastodon-bird-ui/$MASTODON_VERSION_FOR_BIRD_UI/dist/layout-multiple-columns.css -O app/javascript/styles/mastodon-bird-ui/layout-multiple-columns.scss
+# Download the CSS file
+wget -N --no-check-certificate --no-cache --no-cookies --no-http-keep-alive https://raw.githubusercontent.com/ronilaukkarinen/mastodon-bird-ui/$MASTODON_VERSION_FOR_BIRD_UI/dist/mastodon-bird-ui.css -O app/javascript/styles/mastodon-bird-ui/mastodon-bird-ui.scss
 
 # Replace theme-contrast with theme-mastodon-bird-ui-contrast and theme-mastodon-light with theme-mastodon-bird-ui-light
-sed -i -e 's/theme-contrast/theme-mastodon-bird-ui-contrast/g' -e 's/theme-mastodon-light/theme-mastodon-bird-ui-light/g' app/javascript/styles/mastodon-bird-ui/layout-single-column.scss app/javascript/styles/mastodon-bird-ui/layout-multiple-columns.scss
+sed -i -e 's/theme-contrast/theme-mastodon-bird-ui-contrast/g' -e 's/theme-mastodon-light/theme-mastodon-bird-ui-light/g' app/javascript/styles/mastodon-bird-ui/mastodon-bird-ui.scss
 ```
 
 After this commit changes to your Mastodon fork if you have one, then:
@@ -380,7 +374,7 @@ If you really would want this to run in a separate URL, you could in theory set 
 
 ### Is the advanced web interface styled?
 
-Yes! From version 1.5.4 multiple columns are supported. Apply layout-multiple-columns.css to your Custom CSS or style extension to enable.
+Yes! The unified `mastodon-bird-ui.css` covers both single-column and multiple-columns (advanced web interface) layouts automatically.
 
 ### Why the admin interface is not styled?
 
@@ -468,8 +462,7 @@ CSS for `mastodon-bird-ui-accessible` theme (you can also add this to **Custom C
 @import 'contrast/variables';
 @import 'application';
 @import 'contrast/diff';
-@import 'mastodon-bird-ui/layout-single-column.scss';
-@import 'mastodon-bird-ui/layout-multiple-columns.scss';
+@import 'mastodon-bird-ui/mastodon-bird-ui.scss';
 
 body.theme-mastodon-bird-ui-accessible {
   --color-accent: #0a9ff9;

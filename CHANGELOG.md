@@ -18,6 +18,7 @@
 * Update GitHub workflow to use npm scripts and build process
 * Split CSS custom properties into modular files
 * Fixes to heart position
+* Update README.md installation instructions for unified build output
 
 ### 4.0.0rc: 2025-11-30
 
