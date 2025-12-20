@@ -1,6 +1,7 @@
 ### 4.0.0rc3: 2025-12-20
 
 * Revert and rewrite over-engineered modularization
+* Components override for Mastodon v4.6.0+, disable top border/padding for tabs-bar wrapper
 
 ### 4.0.0rc2: 2025-12-13
 

@@ -2,3 +2,7 @@
 @use "layout-multiple-columns";
 @use "tokens";
 @use "error";
+
+// In mastodon core these styles are located under
+// app/javascript/styles/mastodon/components.scss
+@use "components/tabs-bar";
