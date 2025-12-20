@@ -1,3 +1,7 @@
+### 4.0.0rc3: 2025-12-20
+
+* Revert and rewrite over-engineered modularization
+
 ### 4.0.0rc2: 2025-12-13
 
 * Add unified `mastodon-bird-ui.scss` entry point for both layouts
