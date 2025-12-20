@@ -1556,6 +1556,7 @@ body.embed .detailed-status,
 }
 
 // Avatar
+.status__avatar[style="width: 46px; height: 46px;"],
 .account__avatar[style="width: 46px; height: 46px;"],
 .layout-single-column .status__avatar {
   // Need to override inline styles
