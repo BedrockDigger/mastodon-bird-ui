@@ -6,6 +6,7 @@
 * Add --no-optimize to Parcel so Custom CSS users can have unminified CSS
 * Further improve workflow for indexes that both MastoAdmin install script and the SCSS structure use
 * Fix styles for .button--plain
+* Support Wrapstodon
 
 ### 4.0.0rc3: 2025-12-20
 

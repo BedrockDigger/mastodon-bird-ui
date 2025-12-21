@@ -2489,9 +2489,17 @@ body.embed .detailed-status__meta .detailed-status__link .fa-retweet,
   outline: 3px solid var(--color-accent);
 }
 
-.layout-single-column .column-link:focus-visible > span::before,
-.layout-single-column .column-link:hover > span::before {
+.layout-single-column
+  .column-link:focus-visible
+  > span:not(.column-link__badge)::before,
+.layout-single-column
+  .column-link:hover
+  > span:not(.column-link__badge)::before {
   opacity: 1;
+}
+
+.column-link__badge._feat_annual_report_index__navItemBadge::before {
+  opacity: 0 !important;
 }
 
 .layout-single-column .account__section-headline a {
@@ -4320,6 +4328,7 @@ body .compose-form .compose-form__uploads {
 .layout-single-column .notification__filter-bar .icon.icon-user-plus path,
 .layout-single-column .account__header__buttons .icon.icon-tasks path,
 .layout-single-column .notification__filter-bar .icon.icon-tasks path,
+.layout-single-column .icon.icon-wrapstodon-planet path,
 body .navigation-panel__legal .column-link[href="/about"] path {
   display: block;
 }
