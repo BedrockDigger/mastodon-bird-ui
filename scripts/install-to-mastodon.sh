@@ -132,30 +132,48 @@ cp "$SRC_DIR"/components/_*.scss "$STYLES_PATH/mastodon-bird-ui/components/"
 cp "$SRC_DIR"/micro-interactions/_star.scss "$STYLES_PATH/mastodon-bird-ui/_stars.scss"
 
 # Make Bird UI the default if requested
+# This ONLY modifies themes.yml - no core Mastodon files are touched
 if [[ "$MAKE_DEFAULT" =~ ^[Yy]$ ]]; then
   echo ""
-  echo "Making Bird UI the default system theme..."
+  echo "Making Bird UI the default system theme (via themes.yml only)..."
 
-  # Update themes.yml: change default to point to Bird UI
-  # First, ensure original Mastodon themes are available as separate options
+  # Change default to use Bird UI dark (replace whatever the current default is)
+  if grep -q "^default: styles/mastodon-bird-ui-dark.scss" "$THEMES_FILE"; then
+    echo -e "${GREEN}  Default already uses Bird UI Dark${NC}"
+  elif grep -q "^default:" "$THEMES_FILE"; then
+    sed -i 's|^default:.*|default: styles/mastodon-bird-ui-dark.scss|' "$THEMES_FILE"
+    echo -e "${GREEN}  Updated: default → Bird UI Dark${NC}"
+  else
+    # No default entry exists, add it at the beginning
+    sed -i '1i default: styles/mastodon-bird-ui-dark.scss' "$THEMES_FILE"
+    echo -e "${GREEN}  Added: default → Bird UI Dark${NC}"
+  fi
+
+  # Add mastodon-dark pointing to original application.scss
   if ! grep -q "^mastodon-dark:" "$THEMES_FILE"; then
     echo "mastodon-dark: styles/application.scss" >> "$THEMES_FILE"
-    echo -e "${GREEN}  Added: mastodon-dark (original Mastodon dark theme)${NC}"
-  fi
-  if ! grep -q "^mastodon-light:" "$THEMES_FILE"; then
-    echo "mastodon-light: styles/mastodon-light.scss" >> "$THEMES_FILE"
-    echo -e "${GREEN}  Added: mastodon-light (original Mastodon light theme)${NC}"
+    echo -e "${GREEN}  Added: mastodon-dark (original Mastodon dark)${NC}"
+  else
+    echo -e "${GREEN}  Exists: mastodon-dark${NC}"
   fi
 
-  # Change default to use Bird UI
-  if grep -q "^default: styles/application.scss" "$THEMES_FILE"; then
-    sed -i 's|^default: styles/application.scss|default: styles/mastodon-bird-ui-dark.scss|' "$THEMES_FILE"
-    echo -e "${GREEN}  Updated: default now uses Bird UI${NC}"
-  elif grep -q "^default: styles/mastodon-bird-ui-dark.scss" "$THEMES_FILE"; then
-    echo -e "${GREEN}  Default already uses Bird UI${NC}"
+  # Ensure mastodon-light exists (points to original mastodon-light.scss)
+  if ! grep -q "^mastodon-light:" "$THEMES_FILE"; then
+    echo "mastodon-light: styles/mastodon-light.scss" >> "$THEMES_FILE"
+    echo -e "${GREEN}  Added: mastodon-light (original Mastodon light)${NC}"
   else
-    echo -e "${YELLOW}  Warning: default theme has unexpected value, not modified${NC}"
+    echo -e "${GREEN}  Exists: mastodon-light${NC}"
   fi
+
+  # Ensure contrast exists (points to original contrast.scss)
+  if ! grep -q "^contrast:" "$THEMES_FILE"; then
+    echo "contrast: styles/contrast.scss" >> "$THEMES_FILE"
+    echo -e "${GREEN}  Added: contrast (original Mastodon high contrast)${NC}"
+  else
+    echo -e "${GREEN}  Exists: contrast${NC}"
+  fi
+
+  echo -e "${GREEN}  Note: Core Mastodon files were NOT modified${NC}"
 fi
 
 # Generate theme entry points
@@ -399,11 +417,12 @@ FI_VARIATIONS="    mastodon-bird-ui-dark-change-to-stars: Mastodon Bird UI (tumm
     mastodon-bird-ui-accessible-plus: Mastodon Bird UI (saavutettavuus Plus, fontit vielä isommalla)"
 
 # Original Mastodon theme translations (when Bird UI is made default)
+# mastodon-dark needs translation, and we update default to show it's Bird UI
 EN_ORIGINAL="    mastodon-dark: Mastodon (Dark)
-    mastodon-light: Mastodon (Light)"
+    default: Mastodon Bird UI (Dark)"
 
 FI_ORIGINAL="    mastodon-dark: Mastodon (tumma)
-    mastodon-light: Mastodon (vaalea)"
+    default: Mastodon Bird UI (tumma)"
 
 # Build the themes to add
 EN_THEMES="$EN_BASE"
@@ -423,30 +442,38 @@ $EN_VARIATIONS"
 $FI_VARIATIONS"
 fi
 
-# Add English translations
+# Add/update English translations
 if [ -f "$EN_LOCALE" ]; then
   while IFS= read -r line; do
     [ -z "$line" ] && continue
     theme_key=$(echo "$line" | sed 's/:.*//' | xargs)
-    if ! grep -q "^    $theme_key:" "$EN_LOCALE"; then
+    theme_value=$(echo "$line" | sed 's/[^:]*: //')
+    if grep -q "^    $theme_key:" "$EN_LOCALE"; then
+      # Update existing entry
+      sed -i "s|^    $theme_key:.*|    $theme_key: $theme_value|" "$EN_LOCALE"
+      echo -e "${GREEN}  Updated in en.yml: $theme_key${NC}"
+    else
+      # Add new entry
       sed -i "/^  themes:/a\\$line" "$EN_LOCALE"
       echo -e "${GREEN}  Added to en.yml: $theme_key${NC}"
-    else
-      echo -e "${GREEN}  Exists in en.yml: $theme_key${NC}"
     fi
   done <<< "$EN_THEMES"
 fi
 
-# Add Finnish translations
+# Add/update Finnish translations
 if [ -f "$FI_LOCALE" ]; then
   while IFS= read -r line; do
     [ -z "$line" ] && continue
     theme_key=$(echo "$line" | sed 's/:.*//' | xargs)
-    if ! grep -q "^    $theme_key:" "$FI_LOCALE"; then
+    theme_value=$(echo "$line" | sed 's/[^:]*: //')
+    if grep -q "^    $theme_key:" "$FI_LOCALE"; then
+      # Update existing entry
+      sed -i "s|^    $theme_key:.*|    $theme_key: $theme_value|" "$FI_LOCALE"
+      echo -e "${GREEN}  Updated in fi.yml: $theme_key${NC}"
+    else
+      # Add new entry
       sed -i "/^  themes:/a\\$line" "$FI_LOCALE"
       echo -e "${GREEN}  Added to fi.yml: $theme_key${NC}"
-    else
-      echo -e "${GREEN}  Exists in fi.yml: $theme_key${NC}"
     fi
   done <<< "$FI_THEMES"
 fi
