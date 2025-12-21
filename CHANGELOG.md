@@ -9,6 +9,8 @@
 * Fix styles for .button--plain
 * Support Wrapstodon
 * Migrate accessible themes as part of mastodon-bird-ui instead of just README.md snippets
+* Fix video under text layer while scrolling, Fixes #173
+* Fix npm run:<variation> browsersync scripts
 
 ### 4.0.0rc3: 2025-12-20
 
