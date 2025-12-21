@@ -3,7 +3,9 @@
 # https://github.com/ronilaukkarinen/mastodon-bird-ui
 # Author: Roni Laukkarinen (@rolle@mementomori.social)
 #
-# This script installs Bird UI to your Mastodon installation
+# This script installs/updates Bird UI files in your Mastodon installation.
+# It only updates module files, preserving existing entry points and config.
+#
 # Usage: sudo bash scripts/install-to-mastodon.sh --path /opt/mastodon
 
 set -e
@@ -12,14 +14,14 @@ set -e
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # Default values
 MASTODON_PATH="${MASTODON_PATH:-}"
-MAKE_DEFAULT=""
 ADD_VARIATIONS=""
 
-# Get version from CHANGELOG.md
+# Get script directory and version
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SRC_DIR="$SCRIPT_DIR/../src"
 VERSION=$(grep -m1 '^### ' "$SCRIPT_DIR/../CHANGELOG.md" | sed 's/### \([^:]*\):.*/\1/')
@@ -31,30 +33,28 @@ while [[ $# -gt 0 ]]; do
       MASTODON_PATH="$2"
       shift 2
       ;;
-    -d|--default)
-      MAKE_DEFAULT="y"
-      shift
-      ;;
     -v|--variations)
       ADD_VARIATIONS="y"
       shift
       ;;
     -h|--help)
-      echo "Usage: sudo bash $0 [-p|--path /path/to/mastodon] [-d|--default] [-v|--variations]"
+      echo "Usage: sudo bash $0 [-p|--path /path/to/mastodon] [-v|--variations]"
+      echo ""
+      echo "The script auto-detects installation status:"
+      echo "  - New install: Creates entry points and updates themes.yml/locales"
+      echo "  - Existing install: Only updates module files (preserves entry points)"
       echo ""
       echo "Options:"
       echo "  -p, --path        Path to Mastodon installation"
-      echo "  -d, --default     Make Bird UI the default system theme (non-interactive)"
-      echo "  -v, --variations  Add theme variations (non-interactive)"
+      echo "  -v, --variations  Add theme variations (stars, hide-finnish, accessible, etc.)"
       echo "  -h, --help        Show this help message"
       echo ""
-      echo "Environment variables:"
-      echo "  MASTODON_PATH    Alternative way to specify Mastodon path"
-      echo ""
       echo "Examples:"
+      echo "  # Install or update Bird UI:"
       echo "  sudo bash $0 --path /opt/mastodon"
-      echo "  sudo bash $0 --path /opt/mastodon --default --variations"
-      echo "  MASTODON_PATH=/opt/mastodon sudo bash $0"
+      echo ""
+      echo "  # Fresh install with all variations:"
+      echo "  sudo bash $0 --path /opt/mastodon --variations"
       exit 0
       ;;
     *)
@@ -67,7 +67,6 @@ done
 # Check if Mastodon path is provided
 if [ -z "$MASTODON_PATH" ]; then
   echo -e "${YELLOW}Mastodon path not specified.${NC}"
-  echo ""
   read -p "Enter your Mastodon installation path: " MASTODON_PATH
 fi
 
@@ -79,10 +78,10 @@ fi
 
 STYLES_PATH="$MASTODON_PATH/app/javascript/styles"
 THEMES_FILE="$MASTODON_PATH/config/themes.yml"
+BIRD_UI_PATH="$STYLES_PATH/mastodon-bird-ui"
 
 if [ ! -d "$STYLES_PATH" ]; then
   echo -e "${RED}Error: Styles directory not found: $STYLES_PATH${NC}"
-  echo "Are you sure this is a Mastodon installation?"
   exit 1
 fi
 
@@ -91,125 +90,128 @@ if [ ! -f "$THEMES_FILE" ]; then
   exit 1
 fi
 
-echo -e "${GREEN}Installing Mastodon Bird UI $VERSION to $MASTODON_PATH${NC}"
+echo -e "${GREEN}Mastodon Bird UI $VERSION${NC}"
 echo ""
 
-# Ask about making Bird UI the default system theme (if not set via flag)
-if [ -z "$MAKE_DEFAULT" ]; then
-  echo -e "${YELLOW}Make Bird UI the default theme for 'Automatic (use system theme)'?${NC}"
-  echo "This affects guests, logged out users, and users who haven't chosen a theme."
-  read -p "Make Bird UI the default? [y/N]: " MAKE_DEFAULT
-  MAKE_DEFAULT=${MAKE_DEFAULT:-n}
+# Check if Bird UI is already installed
+if [ -d "$BIRD_UI_PATH" ]; then
+  echo -e "${BLUE}Existing Bird UI installation detected.${NC}"
+  echo "Updating module files only (entry points and config preserved)..."
+  UPDATE_MODE="y"
+else
+  echo -e "${BLUE}No existing Bird UI installation found. Running full setup...${NC}"
+  SETUP_NEW="y"
+  UPDATE_MODE=""
 fi
 
-# Ask about adding theme variations (if not set via flag)
-if [ -z "$ADD_VARIATIONS" ]; then
+echo ""
+
+# Create directory structure if needed
+mkdir -p "$BIRD_UI_PATH"
+mkdir -p "$BIRD_UI_PATH/components"
+mkdir -p "$BIRD_UI_PATH/legacy"
+mkdir -p "$BIRD_UI_PATH/micro-interactions"
+mkdir -p "$BIRD_UI_PATH/variants"
+
+echo "Updating Bird UI module files..."
+
+# Copy partial files (files starting with _) - these are the actual styles
+copy_if_exists() {
+  local src="$1"
+  local dest="$2"
+  if [ -f "$src" ]; then
+    cp "$src" "$dest"
+    echo -e "  ${GREEN}Updated:${NC} $(basename "$dest")"
+    return 0
+  fi
+  return 1
+}
+
+# Core module files
+copy_if_exists "$SRC_DIR/_index.scss" "$BIRD_UI_PATH/_index.scss"
+copy_if_exists "$SRC_DIR/_tokens.scss" "$BIRD_UI_PATH/_tokens.scss"
+copy_if_exists "$SRC_DIR/_variables-light.scss" "$BIRD_UI_PATH/_variables-light.scss"
+
+# Components
+for f in "$SRC_DIR/components/"_*.scss; do
+  [ -f "$f" ] && copy_if_exists "$f" "$BIRD_UI_PATH/components/$(basename "$f")"
+done
+
+# Legacy layouts
+for f in "$SRC_DIR/legacy/"_*.scss; do
+  [ -f "$f" ] && copy_if_exists "$f" "$BIRD_UI_PATH/legacy/$(basename "$f")"
+done
+
+# Micro-interactions
+for f in "$SRC_DIR/micro-interactions/"_*.scss; do
+  [ -f "$f" ] && copy_if_exists "$f" "$BIRD_UI_PATH/micro-interactions/$(basename "$f")"
+done
+
+# Create _stars.scss alias at module root (for @use 'mastodon-bird-ui/stars')
+if [ -f "$SRC_DIR/micro-interactions/_star.scss" ]; then
+  cp "$SRC_DIR/micro-interactions/_star.scss" "$BIRD_UI_PATH/_stars.scss"
+  echo -e "  ${GREEN}Updated:${NC} _stars.scss (star animation alias)"
+fi
+
+# Variants
+for f in "$SRC_DIR/variants/"_*.scss; do
+  [ -f "$f" ] && copy_if_exists "$f" "$BIRD_UI_PATH/variants/$(basename "$f")"
+done
+
+echo -e "${GREEN}Module files updated.${NC}"
+
+# Full setup mode - create entry points and update config
+if [[ "$SETUP_NEW" =~ ^[Yy]$ ]] && [ -z "$UPDATE_MODE" ]; then
   echo ""
-  echo -e "${YELLOW}Add theme variations (stars, hide-finnish, accessible, etc.)?${NC}"
-  echo "These add extra theme options for users to choose from."
-  read -p "Add theme variations? [y/N]: " ADD_VARIATIONS
-  ADD_VARIATIONS=${ADD_VARIATIONS:-n}
-fi
+  echo "Setting up entry points and configuration..."
 
-echo ""
+  # Ask about variations if not specified
+  if [ -z "$ADD_VARIATIONS" ]; then
+    read -p "Add theme variations (stars, hide-finnish, accessible, etc.)? [y/N]: " ADD_VARIATIONS
+    ADD_VARIATIONS=${ADD_VARIATIONS:-n}
+  fi
 
-# Create mastodon-bird-ui directory structure
-echo "Creating mastodon-bird-ui/ directory structure..."
-rm -rf "$STYLES_PATH/mastodon-bird-ui"
-mkdir -p "$STYLES_PATH/mastodon-bird-ui"
-mkdir -p "$STYLES_PATH/mastodon-bird-ui/legacy"
-mkdir -p "$STYLES_PATH/mastodon-bird-ui/variants"
-mkdir -p "$STYLES_PATH/mastodon-bird-ui/components"
-
-# Copy Bird UI files
-echo "Copying Bird UI files (existing files will be replaced)..."
-cp "$SRC_DIR"/_index.scss "$STYLES_PATH/mastodon-bird-ui/"
-cp "$SRC_DIR"/_tokens.scss "$STYLES_PATH/mastodon-bird-ui/"
-cp "$SRC_DIR"/_variables-light.scss "$STYLES_PATH/mastodon-bird-ui/"
-cp "$SRC_DIR"/legacy/_layout-*.scss "$STYLES_PATH/mastodon-bird-ui/legacy/"
-cp "$SRC_DIR"/variants/_*.scss "$STYLES_PATH/mastodon-bird-ui/variants/"
-cp "$SRC_DIR"/components/_*.scss "$STYLES_PATH/mastodon-bird-ui/components/"
-cp "$SRC_DIR"/micro-interactions/_star.scss "$STYLES_PATH/mastodon-bird-ui/_stars.scss"
-
-# Make Bird UI the default if requested
-# This ONLY modifies themes.yml - no core Mastodon files are touched
-if [[ "$MAKE_DEFAULT" =~ ^[Yy]$ ]]; then
+  # Create theme entry points in styles root
   echo ""
-  echo "Making Bird UI the default system theme (via themes.yml only)..."
+  echo "Creating theme entry points..."
 
-  # Change default to use Bird UI dark (replace whatever the current default is)
-  if grep -q "^default: styles/mastodon-bird-ui-dark.scss" "$THEMES_FILE"; then
-    echo -e "${GREEN}  Default already uses Bird UI Dark${NC}"
-  elif grep -q "^default:" "$THEMES_FILE"; then
-    sed -i 's|^default:.*|default: styles/mastodon-bird-ui-dark.scss|' "$THEMES_FILE"
-    echo -e "${GREEN}  Updated: default → Bird UI Dark${NC}"
-  else
-    # No default entry exists, add it at the beginning
-    sed -i '1i default: styles/mastodon-bird-ui-dark.scss' "$THEMES_FILE"
-    echo -e "${GREEN}  Added: default → Bird UI Dark${NC}"
-  fi
-
-  # Add mastodon-dark pointing to original application.scss
-  if ! grep -q "^mastodon-dark:" "$THEMES_FILE"; then
-    echo "mastodon-dark: styles/application.scss" >> "$THEMES_FILE"
-    echo -e "${GREEN}  Added: mastodon-dark (original Mastodon dark)${NC}"
-  else
-    echo -e "${GREEN}  Exists: mastodon-dark${NC}"
-  fi
-
-  # Ensure mastodon-light exists (points to original mastodon-light.scss)
-  if ! grep -q "^mastodon-light:" "$THEMES_FILE"; then
-    echo "mastodon-light: styles/mastodon-light.scss" >> "$THEMES_FILE"
-    echo -e "${GREEN}  Added: mastodon-light (original Mastodon light)${NC}"
-  else
-    echo -e "${GREEN}  Exists: mastodon-light${NC}"
-  fi
-
-  # Ensure contrast exists (points to original contrast.scss)
-  if ! grep -q "^contrast:" "$THEMES_FILE"; then
-    echo "contrast: styles/contrast.scss" >> "$THEMES_FILE"
-    echo -e "${GREEN}  Added: contrast (original Mastodon high contrast)${NC}"
-  else
-    echo -e "${GREEN}  Exists: contrast${NC}"
-  fi
-
-  echo -e "${GREEN}  Note: Core Mastodon files were NOT modified${NC}"
-fi
-
-# Generate theme entry points
-echo ""
-echo "Generating theme entry points (existing files will be replaced)..."
-
-# Bird UI Dark (always created)
-cat > "$STYLES_PATH/mastodon-bird-ui-dark.scss" << 'EOF'
+  cat > "$STYLES_PATH/mastodon-bird-ui-dark.scss" << 'EOF'
 @use 'common';
 @use 'mastodon-bird-ui';
 EOF
-echo "  - mastodon-bird-ui-dark.scss"
+  echo "  - mastodon-bird-ui-dark.scss"
 
-# Bird UI Light (always created)
-cat > "$STYLES_PATH/mastodon-bird-ui-light.scss" << 'EOF'
+  cat > "$STYLES_PATH/mastodon-bird-ui-light.scss" << 'EOF'
 @use 'common';
 @use 'mastodon-bird-ui';
 @use 'mastodon-bird-ui/variables-light';
 EOF
-echo "  - mastodon-bird-ui-light.scss"
+  echo "  - mastodon-bird-ui-light.scss"
 
-# Theme variations (only if requested)
-if [[ "$ADD_VARIATIONS" =~ ^[Yy]$ ]]; then
-  echo ""
-  echo "Adding theme variations..."
+  # Create entry points inside module for Custom CSS build compatibility
+  cat > "$BIRD_UI_PATH/mastodon-bird-ui.scss" << 'EOF'
+@use "index";
+EOF
 
-  # Bird UI Dark with stars
-  cat > "$STYLES_PATH/mastodon-bird-ui-dark-change-to-stars.scss" << 'EOF'
+  if [[ "$ADD_VARIATIONS" =~ ^[Yy]$ ]]; then
+    echo ""
+    echo "Creating theme variations..."
+
+    # Stars variant
+    cat > "$STYLES_PATH/mastodon-bird-ui-dark-change-to-stars.scss" << 'EOF'
 @use 'common';
 @use 'mastodon-bird-ui';
 @use 'mastodon-bird-ui/stars';
 EOF
-  echo "  - mastodon-bird-ui-dark-change-to-stars.scss"
+    echo "  - mastodon-bird-ui-dark-change-to-stars.scss"
 
-  # Bird UI Dark - Hide Finnish translate
-  cat > "$STYLES_PATH/hide-finnish.scss" << 'EOF'
+    cat > "$BIRD_UI_PATH/mastodon-bird-ui-stars.scss" << 'EOF'
+@use "index";
+@use "stars";
+EOF
+
+    # Hide Finnish
+    cat > "$STYLES_PATH/hide-finnish.scss" << 'EOF'
 @use 'common';
 @use 'mastodon-bird-ui';
 
@@ -217,10 +219,9 @@ EOF
   display: none;
 }
 EOF
-  echo "  - hide-finnish.scss"
+    echo "  - hide-finnish.scss"
 
-  # Bird UI Dark - Hide Finnish with stars
-  cat > "$STYLES_PATH/hide-finnish-change-to-stars.scss" << 'EOF'
+    cat > "$STYLES_PATH/hide-finnish-change-to-stars.scss" << 'EOF'
 @use 'common';
 @use 'mastodon-bird-ui';
 @use 'mastodon-bird-ui/stars';
@@ -229,10 +230,10 @@ EOF
   display: none;
 }
 EOF
-  echo "  - hide-finnish-change-to-stars.scss"
+    echo "  - hide-finnish-change-to-stars.scss"
 
-  # Bird UI Dark - Hide all translate links
-  cat > "$STYLES_PATH/hide-translate-links.scss" << 'EOF'
+    # Hide translate links
+    cat > "$STYLES_PATH/hide-translate-links.scss" << 'EOF'
 @use 'common';
 @use 'mastodon-bird-ui';
 
@@ -240,10 +241,10 @@ EOF
   display: none;
 }
 EOF
-  echo "  - hide-translate-links.scss"
+    echo "  - hide-translate-links.scss"
 
-  # Bird UI Light - Hide Finnish
-  cat > "$STYLES_PATH/mastodon-bird-ui-light-hide-finnish.scss" << 'EOF'
+    # Light variants
+    cat > "$STYLES_PATH/mastodon-bird-ui-light-hide-finnish.scss" << 'EOF'
 @use 'common';
 @use 'mastodon-bird-ui';
 @use 'mastodon-bird-ui/variables-light';
@@ -252,10 +253,9 @@ EOF
   display: none;
 }
 EOF
-  echo "  - mastodon-bird-ui-light-hide-finnish.scss"
+    echo "  - mastodon-bird-ui-light-hide-finnish.scss"
 
-  # Bird UI Light - Hide Finnish with stars
-  cat > "$STYLES_PATH/mastodon-bird-ui-light-hide-finnish-change-to-stars.scss" << 'EOF'
+    cat > "$STYLES_PATH/mastodon-bird-ui-light-hide-finnish-change-to-stars.scss" << 'EOF'
 @use 'common';
 @use 'mastodon-bird-ui';
 @use 'mastodon-bird-ui/variables-light';
@@ -265,10 +265,9 @@ EOF
   display: none;
 }
 EOF
-  echo "  - mastodon-bird-ui-light-hide-finnish-change-to-stars.scss"
+    echo "  - mastodon-bird-ui-light-hide-finnish-change-to-stars.scss"
 
-  # Bird UI Light - Hide translate links
-  cat > "$STYLES_PATH/mastodon-bird-ui-light-hide-translate-links.scss" << 'EOF'
+    cat > "$STYLES_PATH/mastodon-bird-ui-light-hide-translate-links.scss" << 'EOF'
 @use 'common';
 @use 'mastodon-bird-ui';
 @use 'mastodon-bird-ui/variables-light';
@@ -277,27 +276,30 @@ EOF
   display: none;
 }
 EOF
-  echo "  - mastodon-bird-ui-light-hide-translate-links.scss"
+    echo "  - mastodon-bird-ui-light-hide-translate-links.scss"
 
-  # Bird UI Contrast
-  cat > "$STYLES_PATH/mastodon-bird-ui-contrast.scss" << 'EOF'
+    # High contrast / Accessible variants
+    cat > "$STYLES_PATH/mastodon-bird-ui-contrast.scss" << 'EOF'
 @use 'common';
 @use 'mastodon/high-contrast';
 @use 'mastodon-bird-ui';
 EOF
-  echo "  - mastodon-bird-ui-contrast.scss"
+    echo "  - mastodon-bird-ui-contrast.scss"
 
-  # Bird UI Accessible
-  cat > "$STYLES_PATH/mastodon-bird-ui-accessible.scss" << 'EOF'
+    cat > "$STYLES_PATH/mastodon-bird-ui-accessible.scss" << 'EOF'
 @use 'common';
 @use 'mastodon/high-contrast';
 @use 'mastodon-bird-ui';
 @use 'mastodon-bird-ui/variants/accessible';
 EOF
-  echo "  - mastodon-bird-ui-accessible.scss"
+    echo "  - mastodon-bird-ui-accessible.scss"
 
-  # Bird UI Accessible - Hide Finnish
-  cat > "$STYLES_PATH/mastodon-bird-ui-accessible-hide-finnish.scss" << 'EOF'
+    cat > "$BIRD_UI_PATH/mastodon-bird-ui-accessible.scss" << 'EOF'
+@use "index";
+@use "variants/accessible";
+EOF
+
+    cat > "$STYLES_PATH/mastodon-bird-ui-accessible-hide-finnish.scss" << 'EOF'
 @use 'common';
 @use 'mastodon/high-contrast';
 @use 'mastodon-bird-ui';
@@ -307,196 +309,131 @@ EOF
   display: none;
 }
 EOF
-  echo "  - mastodon-bird-ui-accessible-hide-finnish.scss"
+    echo "  - mastodon-bird-ui-accessible-hide-finnish.scss"
 
-  # Bird UI Accessible Plus
-  cat > "$STYLES_PATH/mastodon-bird-ui-accessible-plus.scss" << 'EOF'
+    cat > "$BIRD_UI_PATH/mastodon-bird-ui-accessible-hide-finnish.scss" << 'EOF'
+@use "index";
+@use "variants/accessible";
+
+.status__content[lang="fi"] + .translate-button {
+  display: none;
+}
+EOF
+
+    cat > "$STYLES_PATH/mastodon-bird-ui-accessible-plus.scss" << 'EOF'
 @use 'common';
 @use 'mastodon/high-contrast';
 @use 'mastodon-bird-ui';
 @use 'mastodon-bird-ui/variants/accessible-plus';
 EOF
-  echo "  - mastodon-bird-ui-accessible-plus.scss"
+    echo "  - mastodon-bird-ui-accessible-plus.scss"
+
+    cat > "$BIRD_UI_PATH/mastodon-bird-ui-accessible-plus.scss" << 'EOF'
+@use "index";
+@use "variants/accessible-plus";
+EOF
+  fi
+
+  # Update themes.yml
+  echo ""
+  echo "Updating themes.yml..."
+  cp "$THEMES_FILE" "$THEMES_FILE.bak"
+
+  add_theme_entry() {
+    local key="$1"
+    local value="$2"
+    if ! grep -q "^${key}:" "$THEMES_FILE"; then
+      echo "${key}: ${value}" >> "$THEMES_FILE"
+      echo -e "  ${GREEN}Added:${NC} $key"
+    fi
+  }
+
+  add_theme_entry "mastodon-bird-ui-dark" "styles/mastodon-bird-ui-dark.scss"
+  add_theme_entry "mastodon-bird-ui-light" "styles/mastodon-bird-ui-light.scss"
+
+  if [[ "$ADD_VARIATIONS" =~ ^[Yy]$ ]]; then
+    add_theme_entry "mastodon-bird-ui-dark-change-to-stars" "styles/mastodon-bird-ui-dark-change-to-stars.scss"
+    add_theme_entry "hide-finnish" "styles/hide-finnish.scss"
+    add_theme_entry "hide-finnish-change-to-stars" "styles/hide-finnish-change-to-stars.scss"
+    add_theme_entry "hide-translate-links" "styles/hide-translate-links.scss"
+    add_theme_entry "mastodon-bird-ui-light-hide-finnish" "styles/mastodon-bird-ui-light-hide-finnish.scss"
+    add_theme_entry "mastodon-bird-ui-light-hide-finnish-change-to-stars" "styles/mastodon-bird-ui-light-hide-finnish-change-to-stars.scss"
+    add_theme_entry "mastodon-bird-ui-light-hide-translate-links" "styles/mastodon-bird-ui-light-hide-translate-links.scss"
+    add_theme_entry "mastodon-bird-ui-contrast" "styles/mastodon-bird-ui-contrast.scss"
+    add_theme_entry "mastodon-bird-ui-accessible" "styles/mastodon-bird-ui-accessible.scss"
+    add_theme_entry "mastodon-bird-ui-accessible-hide-finnish" "styles/mastodon-bird-ui-accessible-hide-finnish.scss"
+    add_theme_entry "mastodon-bird-ui-accessible-plus" "styles/mastodon-bird-ui-accessible-plus.scss"
+  fi
+
+  # Update locale files
+  echo ""
+  echo "Updating locale files..."
+
+  EN_LOCALE="$MASTODON_PATH/config/locales/en.yml"
+  FI_LOCALE="$MASTODON_PATH/config/locales/fi.yml"
+
+  add_locale_entry() {
+    local file="$1"
+    local key="$2"
+    local value="$3"
+    local lang="$4"
+
+    [ ! -f "$file" ] && return
+
+    if ! grep -q "^    ${key}:" "$file"; then
+      if grep -q "^  themes:" "$file"; then
+        sed -i "/^  themes:/a\\    ${key}: ${value}" "$file"
+        echo -e "  ${GREEN}Added to $lang:${NC} $key"
+      fi
+    fi
+  }
+
+  add_locale_entry "$EN_LOCALE" "mastodon-bird-ui-dark" "Mastodon Bird UI (Dark)" "en.yml"
+  add_locale_entry "$EN_LOCALE" "mastodon-bird-ui-light" "Mastodon Bird UI (Light)" "en.yml"
+  add_locale_entry "$FI_LOCALE" "mastodon-bird-ui-dark" "Mastodon Bird UI (tumma)" "fi.yml"
+  add_locale_entry "$FI_LOCALE" "mastodon-bird-ui-light" "Mastodon Bird UI (vaalea)" "fi.yml"
+
+  if [[ "$ADD_VARIATIONS" =~ ^[Yy]$ ]]; then
+    add_locale_entry "$EN_LOCALE" "mastodon-bird-ui-dark-change-to-stars" "Mastodon Bird UI (Dark, Stars)" "en.yml"
+    add_locale_entry "$EN_LOCALE" "hide-finnish" "Mastodon Bird UI (Dark, hide translate Finnish link)" "en.yml"
+    add_locale_entry "$EN_LOCALE" "hide-finnish-change-to-stars" "Mastodon Bird UI (Dark, Stars, hide translate Finnish link)" "en.yml"
+    add_locale_entry "$EN_LOCALE" "hide-translate-links" "Mastodon Bird UI (Dark, hide all Translate links)" "en.yml"
+    add_locale_entry "$EN_LOCALE" "mastodon-bird-ui-light-hide-finnish" "Mastodon Bird UI (Light, hide Finnish)" "en.yml"
+    add_locale_entry "$EN_LOCALE" "mastodon-bird-ui-light-hide-finnish-change-to-stars" "Mastodon Bird UI (Light, Stars, hide Finnish)" "en.yml"
+    add_locale_entry "$EN_LOCALE" "mastodon-bird-ui-light-hide-translate-links" "Mastodon Bird UI (Light, hide Translate links)" "en.yml"
+    add_locale_entry "$EN_LOCALE" "mastodon-bird-ui-contrast" "Mastodon Bird UI (High contrast)" "en.yml"
+    add_locale_entry "$EN_LOCALE" "mastodon-bird-ui-accessible" "Mastodon Bird UI (Accessible)" "en.yml"
+    add_locale_entry "$EN_LOCALE" "mastodon-bird-ui-accessible-hide-finnish" "Mastodon Bird UI (Accessible, hide Finnish)" "en.yml"
+    add_locale_entry "$EN_LOCALE" "mastodon-bird-ui-accessible-plus" "Mastodon Bird UI (Accessible Plus)" "en.yml"
+
+    add_locale_entry "$FI_LOCALE" "mastodon-bird-ui-dark-change-to-stars" "Mastodon Bird UI (tumma, tähdet)" "fi.yml"
+    add_locale_entry "$FI_LOCALE" "hide-finnish" "Mastodon Bird UI (tumma, piilota käännös suomelle)" "fi.yml"
+    add_locale_entry "$FI_LOCALE" "hide-finnish-change-to-stars" "Mastodon Bird UI (tumma, tähdet, piilota käännös suomelle)" "fi.yml"
+    add_locale_entry "$FI_LOCALE" "hide-translate-links" "Mastodon Bird UI (tumma, piilota käännöslinkit)" "fi.yml"
+    add_locale_entry "$FI_LOCALE" "mastodon-bird-ui-light-hide-finnish" "Mastodon Bird UI (vaalea, piilota käännös suomelle)" "fi.yml"
+    add_locale_entry "$FI_LOCALE" "mastodon-bird-ui-light-hide-finnish-change-to-stars" "Mastodon Bird UI (vaalea, tähdet, piilota käännös suomelle)" "fi.yml"
+    add_locale_entry "$FI_LOCALE" "mastodon-bird-ui-light-hide-translate-links" "Mastodon Bird UI (vaalea, piilota käännöslinkit)" "fi.yml"
+    add_locale_entry "$FI_LOCALE" "mastodon-bird-ui-contrast" "Mastodon Bird UI (suuri kontrasti)" "fi.yml"
+    add_locale_entry "$FI_LOCALE" "mastodon-bird-ui-accessible" "Mastodon Bird UI (saavutettava)" "fi.yml"
+    add_locale_entry "$FI_LOCALE" "mastodon-bird-ui-accessible-hide-finnish" "Mastodon Bird UI (saavutettava, piilota käännös suomelle)" "fi.yml"
+    add_locale_entry "$FI_LOCALE" "mastodon-bird-ui-accessible-plus" "Mastodon Bird UI (saavutettava Plus)" "fi.yml"
+  fi
 fi
 
-# Fix ownership
+# Fix ownership and permissions
 echo ""
-echo "Fixing file ownership..."
-chown -R mastodon:mastodon "$STYLES_PATH/mastodon-bird-ui"
+echo "Fixing file ownership and permissions..."
+chmod -R a+r "$BIRD_UI_PATH"
+find "$BIRD_UI_PATH" -type d -exec chmod a+rx {} \;
+chown -R mastodon:mastodon "$BIRD_UI_PATH"
 chown mastodon:mastodon "$STYLES_PATH"/mastodon-bird-ui-*.scss 2>/dev/null || true
 chown mastodon:mastodon "$STYLES_PATH"/hide-*.scss 2>/dev/null || true
 
-# Update themes.yml
 echo ""
-echo "Updating themes.yml..."
-
-# Base themes (always added)
-BASE_THEMES=(
-  "mastodon-bird-ui-dark: styles/mastodon-bird-ui-dark.scss"
-  "mastodon-bird-ui-light: styles/mastodon-bird-ui-light.scss"
-)
-
-# Variation themes (only if requested)
-VARIATION_THEMES=(
-  "mastodon-bird-ui-dark-change-to-stars: styles/mastodon-bird-ui-dark-change-to-stars.scss"
-  "hide-finnish: styles/hide-finnish.scss"
-  "hide-finnish-change-to-stars: styles/hide-finnish-change-to-stars.scss"
-  "hide-translate-links: styles/hide-translate-links.scss"
-  "mastodon-bird-ui-light-hide-finnish: styles/mastodon-bird-ui-light-hide-finnish.scss"
-  "mastodon-bird-ui-light-hide-finnish-change-to-stars: styles/mastodon-bird-ui-light-hide-finnish-change-to-stars.scss"
-  "mastodon-bird-ui-light-hide-translate-links: styles/mastodon-bird-ui-light-hide-translate-links.scss"
-  "mastodon-bird-ui-contrast: styles/mastodon-bird-ui-contrast.scss"
-  "mastodon-bird-ui-accessible: styles/mastodon-bird-ui-accessible.scss"
-  "mastodon-bird-ui-accessible-hide-finnish: styles/mastodon-bird-ui-accessible-hide-finnish.scss"
-  "mastodon-bird-ui-accessible-plus: styles/mastodon-bird-ui-accessible-plus.scss"
-)
-
-# Add base themes
-for theme in "${BASE_THEMES[@]}"; do
-  theme_name=$(echo "$theme" | cut -d: -f1)
-  if ! grep -q "^$theme_name:" "$THEMES_FILE"; then
-    echo "$theme" >> "$THEMES_FILE"
-    echo -e "${GREEN}  Added: $theme_name${NC}"
-  else
-    echo -e "${GREEN}  Exists: $theme_name${NC}"
-  fi
-done
-
-# Add variation themes if requested
-if [[ "$ADD_VARIATIONS" =~ ^[Yy]$ ]]; then
-  for theme in "${VARIATION_THEMES[@]}"; do
-    theme_name=$(echo "$theme" | cut -d: -f1)
-    if ! grep -q "^$theme_name:" "$THEMES_FILE"; then
-      echo "$theme" >> "$THEMES_FILE"
-      echo -e "${GREEN}  Added: $theme_name${NC}"
-    else
-      echo -e "${GREEN}  Exists: $theme_name${NC}"
-    fi
-  done
-fi
-
-# Update locale files with theme translations
-echo ""
-echo "Updating locale files..."
-
-EN_LOCALE="$MASTODON_PATH/config/locales/en.yml"
-FI_LOCALE="$MASTODON_PATH/config/locales/fi.yml"
-
-# Base English translations
-EN_BASE="    mastodon-bird-ui-dark: Mastodon Bird UI (Dark)
-    mastodon-bird-ui-light: Mastodon Bird UI (Light)"
-
-# Variation English translations
-EN_VARIATIONS="    mastodon-bird-ui-dark-change-to-stars: Mastodon Bird UI (Dark, Stars)
-    hide-finnish: Mastodon Bird UI (Dark, hide translate Finnish link)
-    hide-finnish-change-to-stars: Mastodon Bird UI (Dark, Stars, hide translate Finnish link)
-    hide-translate-links: Mastodon Bird UI (Dark, hide all Translate links)
-    mastodon-bird-ui-light-hide-finnish: Mastodon Bird UI (Light, hide Translate link for Finnish)
-    mastodon-bird-ui-light-hide-finnish-change-to-stars: Mastodon Bird UI (Light, Stars, hide Translate link for Finnish)
-    mastodon-bird-ui-light-hide-translate-links: Mastodon Bird UI (Light, hide all Translate links)
-    mastodon-bird-ui-contrast: Mastodon Bird UI (High contrast)
-    mastodon-bird-ui-accessible: Mastodon Bird UI (Ultra accessible)
-    mastodon-bird-ui-accessible-hide-finnish: Mastodon Bird UI (Ultra accessible, hide translate link for Finnish)
-    mastodon-bird-ui-accessible-plus: Mastodon Bird UI (Ultra accessible Plus+)"
-
-# Base Finnish translations
-FI_BASE="    mastodon-bird-ui-dark: Mastodon Bird UI (tumma)
-    mastodon-bird-ui-light: Mastodon Bird UI (vaalea)"
-
-# Variation Finnish translations
-FI_VARIATIONS="    mastodon-bird-ui-dark-change-to-stars: Mastodon Bird UI (tumma, tähdet)
-    hide-finnish: Mastodon Bird UI (tumma, piilota Käännä-linkit suomen kielelle)
-    hide-finnish-change-to-stars: Mastodon Bird UI (tumma, Tähdet, piilota Käännä-linkit suomen kielelle)
-    hide-translate-links: Mastodon Bird UI (tumma, piilota kaikki käännöslinkit)
-    mastodon-bird-ui-light-hide-finnish: Mastodon Bird UI (vaalea, piilota Käännä-linkit suomen kielelle)
-    mastodon-bird-ui-light-hide-finnish-change-to-stars: Mastodon Bird UI (vaalea, Tähdet, piilota Käännä-linkit suomen kielelle)
-    mastodon-bird-ui-light-hide-translate-links: Mastodon Bird UI (vaalea, piilota kaikki käännöslinkit)
-    mastodon-bird-ui-contrast: Mastodon Bird UI (suuri kontrasti)
-    mastodon-bird-ui-accessible: Mastodon Bird UI (saavutettavuus huomioitu)
-    mastodon-bird-ui-accessible-hide-finnish: Mastodon Bird UI (saavutettavuus huomioitu, piilota Käännä-linkit suomelle)
-    mastodon-bird-ui-accessible-plus: Mastodon Bird UI (saavutettavuus Plus, fontit vielä isommalla)"
-
-# Original Mastodon theme translations (when Bird UI is made default)
-# mastodon-dark needs translation, and we update default to show it's Bird UI
-EN_ORIGINAL="    mastodon-dark: Mastodon (Dark)
-    default: Mastodon Bird UI (Dark)"
-
-FI_ORIGINAL="    mastodon-dark: Mastodon (tumma)
-    default: Mastodon Bird UI (tumma)"
-
-# Build the themes to add
-EN_THEMES="$EN_BASE"
-FI_THEMES="$FI_BASE"
-
-if [[ "$MAKE_DEFAULT" =~ ^[Yy]$ ]]; then
-  EN_THEMES="$EN_THEMES
-$EN_ORIGINAL"
-  FI_THEMES="$FI_THEMES
-$FI_ORIGINAL"
-fi
-
-if [[ "$ADD_VARIATIONS" =~ ^[Yy]$ ]]; then
-  EN_THEMES="$EN_THEMES
-$EN_VARIATIONS"
-  FI_THEMES="$FI_THEMES
-$FI_VARIATIONS"
-fi
-
-# Add/update English translations
-if [ -f "$EN_LOCALE" ]; then
-  while IFS= read -r line; do
-    [ -z "$line" ] && continue
-    theme_key=$(echo "$line" | sed 's/:.*//' | xargs)
-    theme_value=$(echo "$line" | sed 's/[^:]*: //')
-    if grep -q "^    $theme_key:" "$EN_LOCALE"; then
-      # Update existing entry
-      sed -i "s|^    $theme_key:.*|    $theme_key: $theme_value|" "$EN_LOCALE"
-      echo -e "${GREEN}  Updated in en.yml: $theme_key${NC}"
-    else
-      # Add new entry
-      sed -i "/^  themes:/a\\$line" "$EN_LOCALE"
-      echo -e "${GREEN}  Added to en.yml: $theme_key${NC}"
-    fi
-  done <<< "$EN_THEMES"
-fi
-
-# Add/update Finnish translations
-if [ -f "$FI_LOCALE" ]; then
-  while IFS= read -r line; do
-    [ -z "$line" ] && continue
-    theme_key=$(echo "$line" | sed 's/:.*//' | xargs)
-    theme_value=$(echo "$line" | sed 's/[^:]*: //')
-    if grep -q "^    $theme_key:" "$FI_LOCALE"; then
-      # Update existing entry
-      sed -i "s|^    $theme_key:.*|    $theme_key: $theme_value|" "$FI_LOCALE"
-      echo -e "${GREEN}  Updated in fi.yml: $theme_key${NC}"
-    else
-      # Add new entry
-      sed -i "/^  themes:/a\\$line" "$FI_LOCALE"
-      echo -e "${GREEN}  Added to fi.yml: $theme_key${NC}"
-    fi
-  done <<< "$FI_THEMES"
-fi
-
-echo ""
-echo -e "${GREEN}Installation complete!${NC}"
-echo ""
-echo "Summary:"
-if [[ "$MAKE_DEFAULT" =~ ^[Yy]$ ]]; then
-  echo -e "  ${GREEN}✓${NC} Bird UI is now the default system theme"
-fi
-echo -e "  ${GREEN}✓${NC} Base themes installed (Dark, Light)"
-if [[ "$ADD_VARIATIONS" =~ ^[Yy]$ ]]; then
-  echo -e "  ${GREEN}✓${NC} Theme variations installed"
-fi
+echo -e "${GREEN}Done!${NC}"
 echo ""
 echo "Next steps:"
 echo "1. Recompile assets:"
-echo "   Production:  RAILS_ENV=production bundle exec rails assets:precompile"
-echo "   Development: RAILS_ENV=development bundle exec rails assets:precompile"
+echo "   cd $MASTODON_PATH"
+echo "   RAILS_ENV=production bundle exec rails assets:precompile"
 echo "2. Restart Mastodon web service"
-echo "3. Users can select Bird UI themes in Preferences > Appearance"
-if [[ "$MAKE_DEFAULT" =~ ^[Yy]$ ]]; then
-  echo ""
-  echo "Note: 'Automatic (use system theme)' will now use Bird UI for all users."
-fi

@@ -3,6 +3,7 @@
 * Release install-to-mastodon.sh workflow
 * Fix styles leaking to admin
 * Improve install script, add y/n for variations and default theme
+* Fix install script breaking existing Mastodon installations by auto-detecting update vs new install mode
 * Add --no-optimize to Parcel so Custom CSS users can have unminified CSS
 * Further improve workflow for indexes that both MastoAdmin install script and the SCSS structure use
 * Fix styles for .button--plain
