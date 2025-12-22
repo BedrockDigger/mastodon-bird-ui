@@ -109,6 +109,7 @@ echo ""
 # Create directory structure if needed
 mkdir -p "$BIRD_UI_PATH"
 mkdir -p "$BIRD_UI_PATH/components"
+mkdir -p "$BIRD_UI_PATH/layouts"
 mkdir -p "$BIRD_UI_PATH/legacy"
 mkdir -p "$BIRD_UI_PATH/micro-interactions"
 mkdir -p "$BIRD_UI_PATH/variants"
@@ -129,12 +130,18 @@ copy_if_exists() {
 
 # Core module files
 copy_if_exists "$SRC_DIR/_index.scss" "$BIRD_UI_PATH/_index.scss"
+copy_if_exists "$SRC_DIR/_base.scss" "$BIRD_UI_PATH/_base.scss"
 copy_if_exists "$SRC_DIR/_tokens.scss" "$BIRD_UI_PATH/_tokens.scss"
 copy_if_exists "$SRC_DIR/_variables-light.scss" "$BIRD_UI_PATH/_variables-light.scss"
 
 # Components
 for f in "$SRC_DIR/components/"_*.scss; do
   [ -f "$f" ] && copy_if_exists "$f" "$BIRD_UI_PATH/components/$(basename "$f")"
+done
+
+# Layouts
+for f in "$SRC_DIR/layouts/"_*.scss; do
+  [ -f "$f" ] && copy_if_exists "$f" "$BIRD_UI_PATH/layouts/$(basename "$f")"
 done
 
 # Legacy layouts
