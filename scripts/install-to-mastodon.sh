@@ -222,7 +222,7 @@ EOF
 @use 'common';
 @use 'mastodon-bird-ui';
 
-.status__content[lang="fi"] + .translate-button {
+.status__content__text[lang="fi"] ~ .status__content__translate-button {
   display: none;
 }
 EOF
@@ -233,7 +233,7 @@ EOF
 @use 'mastodon-bird-ui';
 @use 'mastodon-bird-ui/stars';
 
-.status__content[lang="fi"] + .translate-button {
+.status__content__text[lang="fi"] ~ .status__content__translate-button {
   display: none;
 }
 EOF
@@ -244,7 +244,7 @@ EOF
 @use 'common';
 @use 'mastodon-bird-ui';
 
-.status__content[lang] + .translate-button {
+.status__content__text[lang] ~ .status__content__translate-button {
   display: none;
 }
 EOF
@@ -255,10 +255,7 @@ EOF
 @use 'common';
 @use 'mastodon-bird-ui';
 @use 'mastodon-bird-ui/variables-light';
-
-.status__content[lang="fi"] + .translate-button {
-  display: none;
-}
+@use 'mastodon-bird-ui/variants/hide-finnish';
 EOF
     echo "  - mastodon-bird-ui-light-hide-finnish.scss"
 
@@ -267,10 +264,7 @@ EOF
 @use 'mastodon-bird-ui';
 @use 'mastodon-bird-ui/variables-light';
 @use 'mastodon-bird-ui/stars';
-
-.status__content[lang="fi"] + .translate-button {
-  display: none;
-}
+@use 'mastodon-bird-ui/variants/hide-finnish';
 EOF
     echo "  - mastodon-bird-ui-light-hide-finnish-change-to-stars.scss"
 
@@ -278,10 +272,7 @@ EOF
 @use 'common';
 @use 'mastodon-bird-ui';
 @use 'mastodon-bird-ui/variables-light';
-
-.status__content[lang] + .translate-button {
-  display: none;
-}
+@use 'mastodon-bird-ui/variants/hide-translate-links';
 EOF
     echo "  - mastodon-bird-ui-light-hide-translate-links.scss"
 
@@ -311,20 +302,14 @@ EOF
 @use 'mastodon/high-contrast';
 @use 'mastodon-bird-ui';
 @use 'mastodon-bird-ui/variants/accessible';
-
-.status__content[lang="fi"] + .translate-button {
-  display: none;
-}
+@use 'mastodon-bird-ui/variants/hide-finnish';
 EOF
     echo "  - mastodon-bird-ui-accessible-hide-finnish.scss"
 
     cat > "$BIRD_UI_PATH/mastodon-bird-ui-accessible-hide-finnish.scss" << 'EOF'
 @use "index";
 @use "variants/accessible";
-
-.status__content[lang="fi"] + .translate-button {
-  display: none;
-}
+@use "variants/hide-finnish";
 EOF
 
     cat > "$STYLES_PATH/mastodon-bird-ui-accessible-plus.scss" << 'EOF'
