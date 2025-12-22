@@ -1,5 +1,11 @@
 html[data-user-theme="mastodon-bird-ui-light"],
-html:has(body:not(.admin))[data-user-theme="mastodon-bird-ui-light"] {
+html[data-user-theme="mastodon-bird-ui-light-hide-finnish"],
+html[data-user-theme="mastodon-bird-ui-light-hide-finnish-change-to-stars"],
+html[data-user-theme="mastodon-bird-ui-light-hide-translate-links"],
+html:has(body:not(.admin))[data-user-theme="mastodon-bird-ui-light"],
+html:has(body:not(.admin))[data-user-theme="mastodon-bird-ui-light-hide-finnish"],
+html:has(body:not(.admin))[data-user-theme="mastodon-bird-ui-light-hide-finnish-change-to-stars"],
+html:has(body:not(.admin))[data-user-theme="mastodon-bird-ui-light-hide-translate-links"] {
   --color-bg: #fff;
   --color-fg: #000;
   --color-border: #e6e1ed;
