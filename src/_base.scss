@@ -1215,9 +1215,11 @@ body.theme-mastodon-light.layout-single-column {
     background-color: var(--color-dark);
   }
 
-  body .notification-group--unread::before,
-  body .notification-ungrouped--unread::before {
-    display: none;
+  @at-root {
+    .notification-group--unread::before,
+    .notification-ungrouped--unread::before {
+      display: none;
+    }
   }
 
   .notification:hover .notification__message {
