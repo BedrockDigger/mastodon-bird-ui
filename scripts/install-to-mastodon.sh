@@ -167,16 +167,16 @@ done
 
 echo -e "${GREEN}Module files updated.${NC}"
 
+# Ask about variations if not specified
+if [ -z "$ADD_VARIATIONS" ]; then
+  read -p "Add/update theme variations (stars, hide-finnish, accessible, etc.)? [y/N]: " ADD_VARIATIONS
+  ADD_VARIATIONS=${ADD_VARIATIONS:-n}
+fi
+
 # Full setup mode - create entry points and update config
 if [[ "$SETUP_NEW" =~ ^[Yy]$ ]] && [ -z "$UPDATE_MODE" ]; then
   echo ""
   echo "Setting up entry points and configuration..."
-
-  # Ask about variations if not specified
-  if [ -z "$ADD_VARIATIONS" ]; then
-    read -p "Add theme variations (stars, hide-finnish, accessible, etc.)? [y/N]: " ADD_VARIATIONS
-    ADD_VARIATIONS=${ADD_VARIATIONS:-n}
-  fi
 
   # Create theme entry points in styles root
   echo ""
@@ -199,8 +199,10 @@ EOF
   cat > "$BIRD_UI_PATH/mastodon-bird-ui.scss" << 'EOF'
 @use "index";
 EOF
+fi
 
-  if [[ "$ADD_VARIATIONS" =~ ^[Yy]$ ]]; then
+# Create/update variations (both new install and update mode)
+if [[ "$ADD_VARIATIONS" =~ ^[Yy]$ ]]; then
     echo ""
     echo "Creating theme variations..."
 
@@ -324,9 +326,10 @@ EOF
 @use "index";
 @use "variants/accessible-plus";
 EOF
-  fi
+fi
 
-  # Update themes.yml
+# Update themes.yml (for both new and update modes)
+if [[ "$ADD_VARIATIONS" =~ ^[Yy]$ ]] || [ -z "$UPDATE_MODE" ]; then
   echo ""
   echo "Updating themes.yml..."
   cp "$THEMES_FILE" "$THEMES_FILE.bak"
@@ -340,8 +343,10 @@ EOF
     fi
   }
 
-  add_theme_entry "mastodon-bird-ui-dark" "styles/mastodon-bird-ui-dark.scss"
-  add_theme_entry "mastodon-bird-ui-light" "styles/mastodon-bird-ui-light.scss"
+  if [ -z "$UPDATE_MODE" ]; then
+    add_theme_entry "mastodon-bird-ui-dark" "styles/mastodon-bird-ui-dark.scss"
+    add_theme_entry "mastodon-bird-ui-light" "styles/mastodon-bird-ui-light.scss"
+  fi
 
   if [[ "$ADD_VARIATIONS" =~ ^[Yy]$ ]]; then
     add_theme_entry "mastodon-bird-ui-dark-change-to-stars" "styles/mastodon-bird-ui-dark-change-to-stars.scss"
@@ -380,10 +385,12 @@ EOF
     fi
   }
 
-  add_locale_entry "$EN_LOCALE" "mastodon-bird-ui-dark" "Mastodon Bird UI (Dark)" "en.yml"
-  add_locale_entry "$EN_LOCALE" "mastodon-bird-ui-light" "Mastodon Bird UI (Light)" "en.yml"
-  add_locale_entry "$FI_LOCALE" "mastodon-bird-ui-dark" "Mastodon Bird UI (tumma)" "fi.yml"
-  add_locale_entry "$FI_LOCALE" "mastodon-bird-ui-light" "Mastodon Bird UI (vaalea)" "fi.yml"
+  if [ -z "$UPDATE_MODE" ]; then
+    add_locale_entry "$EN_LOCALE" "mastodon-bird-ui-dark" "Mastodon Bird UI (Dark)" "en.yml"
+    add_locale_entry "$EN_LOCALE" "mastodon-bird-ui-light" "Mastodon Bird UI (Light)" "en.yml"
+    add_locale_entry "$FI_LOCALE" "mastodon-bird-ui-dark" "Mastodon Bird UI (tumma)" "fi.yml"
+    add_locale_entry "$FI_LOCALE" "mastodon-bird-ui-light" "Mastodon Bird UI (vaalea)" "fi.yml"
+  fi
 
   if [[ "$ADD_VARIATIONS" =~ ^[Yy]$ ]]; then
     add_locale_entry "$EN_LOCALE" "mastodon-bird-ui-dark-change-to-stars" "Mastodon Bird UI (Dark, Stars)" "en.yml"
