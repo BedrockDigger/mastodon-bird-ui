@@ -4405,6 +4405,10 @@ body.theme-mastodon-light.layout-single-column {
     top: 100%;
   }
 
+  .lists__item__title span {
+    color: var(--color-fg);
+  }
+
   .list-panel .icon {
     display: none;
   }
