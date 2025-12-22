@@ -1095,7 +1095,7 @@ body.theme-mastodon-light.layout-single-column {
   }
 
   // Filtered post / Content warnings
-  body .status__wrapper.status__wrapper--filtered {
+  .status__wrapper.status__wrapper--filtered {
     align-items: center;
     background-color: var(--color-focusable-toot);
     border: 1px solid var(--color-border);
@@ -1114,11 +1114,10 @@ body.theme-mastodon-light.layout-single-column {
     width: calc(100% - calc(var(--gap-default) * 2));
   }
 
-  body
-    .columns-area__panels__pane--compositional
+  .columns-area__panels__pane--compositional
     .compose-form
     .spoiler-input__input,
-  body .content-warning {
+  .content-warning {
     background-color: var(--color-focusable-toot);
     border: 1px solid var(--color-border);
     border-radius: var(--border-radius);
@@ -1130,20 +1129,17 @@ body.theme-mastodon-light.layout-single-column {
     white-space: unset;
   }
 
-  body .compose-form__highlightable:has(.spoiler-input__input) {
+  .compose-form__highlightable:has(.spoiler-input__input) {
     border-top-left-radius: var(--border-radius);
     border-top-right-radius: var(--border-radius);
   }
 
-  body
-    .compose-form:has(.spoiler-input__input)
-    .spoiler-input
-    .autosuggest-input {
+  .compose-form:has(.spoiler-input__input) .spoiler-input .autosuggest-input {
     border-bottom: 0;
     border-radius: var(--border-radius);
   }
 
-  body .content-warning .link-button {
+  .content-warning .link-button {
     align-self: flex-start;
     color: var(--color-fg);
     font-size: var(--font-size-mid);
@@ -1154,7 +1150,7 @@ body.theme-mastodon-light.layout-single-column {
   }
 
   // New content warnings in 4.3.0.beta.1-mementomods-2024-08-23
-  body .status:not(.status--in-thread) .content-warning {
+  .status:not(.status--in-thread) .content-warning {
     margin-bottom: var(--gap-default);
     margin-left: calc(var(--size-avatar) + var(--gap-default));
     margin-top: var(--gap-default);
@@ -1165,13 +1161,13 @@ body.theme-mastodon-light.layout-single-column {
     padding: 0;
   }
 
-  body .content-warning p {
+  .content-warning p {
     margin-bottom: 0;
   }
 
-  body .spoiler-input__border,
-  body .content-warning::after,
-  body .content-warning::before {
+  .spoiler-input__border,
+  .content-warning::after,
+  .content-warning::before {
     display: none;
   }
 
@@ -1219,7 +1215,7 @@ body.theme-mastodon-light.layout-single-column {
   .notification.unread:hover,
   .notification.unread,
   .status__wrapper.unread,
-  body .notification-group.notification-group--unread {
+  .notification-group.notification-group--unread {
     background-color: var(--color-dark);
   }
 
@@ -1525,7 +1521,7 @@ body.theme-mastodon-light.layout-single-column {
   }
 
   // Improve "others you know follow" avatar group
-  body .avatar-group--compact .account__avatar {
+  .avatar-group--compact .account__avatar {
     box-shadow: none;
   }
 
@@ -3443,7 +3439,7 @@ body.theme-mastodon-light.layout-single-column {
     margin-left: 0;
   }
 
-  body .compose-form .compose-form__uploads {
+  .compose-form .compose-form__uploads {
     margin-left: 0;
     margin-top: 0;
     padding-left: 0;
@@ -3788,11 +3784,11 @@ body.theme-mastodon-light.layout-single-column {
   .account__header__buttons .icon.icon-tasks path,
   .notification__filter-bar .icon.icon-tasks path,
   .icon.icon-wrapstodon-planet path,
-  body .navigation-panel__legal .column-link[href="/about"] path {
+  .navigation-panel__legal .column-link[href="/about"] path {
     display: block;
   }
 
-  body .navigation-panel__legal .column-link[href="/about"] svg {
+  .navigation-panel__legal .column-link[href="/about"] svg {
     background-image: none;
   }
 
