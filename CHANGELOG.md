@@ -8,6 +8,8 @@
 * Add `stylelint-value-no-unknown-custom-properties` to detect undefined CSS custom properties
 * Add custom `plugin/no-unused-custom-properties` to detect unused CSS custom properties
 * Fix accessible theme background not applying due to nested body selector losing specificity
+* Fix hide-finnish and hide-translate-links variant selectors to match updated Mastodon HTML structure
+* Add `--color-text-brand` override for all themes to use Bird UI accent colors
 
 ### 4.0.0-alpha.0: 2025-12-21
 

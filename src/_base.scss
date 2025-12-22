@@ -63,6 +63,9 @@ html:has(body:not(.admin)):where(
   --color-bg-compose-form: rgb(39 44 64 / 40%);
   --color-bg-compose-form-focus: rgb(39 44 64 / 80%);
 
+  // Mastodon 4.6.0+ semantic tokens override
+  --color-text-brand: var(--color-accent);
+
   // In the original UI this color is lighten($ui-base-color, 12%)
   --color-outer-space: #42485a;
 
