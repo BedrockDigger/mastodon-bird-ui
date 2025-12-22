@@ -3439,6 +3439,10 @@ body.theme-mastodon-light.layout-single-column {
     z-index: 4;
   }
 
+  .compose-form__uploads.media-gallery {
+    margin-left: 0;
+  }
+
   body .compose-form .compose-form__uploads {
     margin-left: 0;
     margin-top: 0;
