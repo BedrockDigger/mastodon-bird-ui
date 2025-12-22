@@ -1027,7 +1027,6 @@ body.theme-mastodon-light.layout-single-column {
   .status__content a.unhandled-link,
   .column-header > .column-header__back-button,
   .reply-indicator__content a,
-  body.embed .status__content a,
   .status__content a,
   .column-link--transparent.active,
   .status__content__read-more-button {
@@ -1470,7 +1469,6 @@ body.theme-mastodon-light.layout-single-column {
   .compose-form__poll-wrapper select,
   .poll__option input[type="text"],
   .language-dropdown__dropdown,
-  body.embed .activity-stream .entry,
   .report-dialog-modal__textarea,
   .drawer__inner,
   .column-inline-form,
@@ -1498,7 +1496,6 @@ body.theme-mastodon-light.layout-single-column {
   .notification__filter-bar,
   .tabs-bar__wrapper,
   .column-header,
-  body.embed .detailed-status,
   .detailed-status,
   .detailed-status__action-bar,
   .column > .scrollable {
@@ -1526,7 +1523,6 @@ body.theme-mastodon-light.layout-single-column {
   }
 
   // Avatars
-  body.embed .detailed-status__display-avatar > img,
   .account-card__title__avatar .account__avatar,
   .account-card__title__avatar img,
   .account__avatar > img,
@@ -1711,21 +1707,11 @@ body.theme-mastodon-light.layout-single-column {
   }
 
   // Start: Experimental Threads-like media proportions, if the height is tall, show smaller media: https://mementomori.social/@rolle/111715197571142727
-  body.embed .media-gallery__item.standalone img,
-  body.embed .video-player .media-gallery__preview,
   .media-gallery__item.standalone img,
   .video-player .media-gallery__preview {
     object-fit: contain;
   }
 
-  body.embed .status .audio-player,
-  body.embed .status .media-gallery,
-  body.embed .status .video-player,
-  body.embed .audio-player,
-  body.embed .media-gallery,
-  body.embed .media-gallery__gifv,
-  body.embed .media-gallery__preview,
-  body.embed .video-player,
   .detailed-status .status.status--is-quote .media-gallery,
   .status .audio-player,
   .status .media-gallery,
@@ -1739,23 +1725,12 @@ body.theme-mastodon-light.layout-single-column {
     margin-left: calc(var(--size-avatar) + var(--gap-default));
   }
 
-  body.embed [data-component="Video"] > div {
-    aspect-ratio: unset !important;
-  }
-
-  body.embed .spoiler-button + .media-gallery__item > .media-gallery__preview,
   .spoiler-button + .media-gallery__item > .media-gallery__preview {
     margin-left: unset !important;
     max-height: unset !important;
     width: 100% !important;
   }
 
-  body.embed .media-gallery__gifv,
-  body.embed .detailed-status .audio-player,
-  body.embed .detailed-status .media-gallery,
-  body.embed .detailed-status .media-gallery__gifv,
-  body.embed .detailed-status .media-gallery__preview,
-  body.embed .detailed-status .video-player,
   .media-gallery__gifv,
   .media-gallery__preview,
   .detailed-status .audio-player,
@@ -1825,28 +1800,11 @@ body.theme-mastodon-light.layout-single-column {
     line-height: 1.4;
   }
 
-  // Embeds
-  body.embed .detailed-status__link {
-    margin-left: 4px;
-    top: 0;
-  }
-
-  body.embed #mastodon-status {
-    overflow: hidden;
-  }
-
-  body.embed .detailed-status__meta,
   .detailed-status__meta {
     color: var(--color-dim);
     font-size: var(--font-size);
   }
 
-  body.embed .detailed-status__meta {
-    line-height: 1.5;
-  }
-
-  body.embed .detailed-status__reblogs,
-  body.embed .detailed-status__favorites,
   .detailed-status__favorites,
   .detailed-status__reblogs {
     display: inline-flex;
@@ -1854,33 +1812,13 @@ body.theme-mastodon-light.layout-single-column {
     gap: 4px;
   }
 
-  body.embed .detailed-status__meta .animated-number,
   .detailed-status__meta .animated-number {
     color: var(--color-light-text);
     font-weight: var(--font-weight-bold);
   }
 
-  body.embed .detailed-status__reblogs,
   .detailed-status__reblogs {
     font-size: var(--font-size);
-  }
-
-  body.embed .detailed-status__reblogs,
-  body.embed .detailed-status__favorites {
-    color: var(--color-light-text);
-    font-weight: var(--font-weight-bold);
-  }
-
-  body.embed .activity-stream .entry {
-    background-color: var(--color-bg);
-  }
-
-  body.embed > .activity-stream {
-    backface-visibility: hidden;
-    background: #313543 !important;
-    border: 1px solid var(--color-border);
-    border-radius: 10px;
-    overflow: hidden;
   }
 
   // Fix alignment
@@ -1896,30 +1834,24 @@ body.theme-mastodon-light.layout-single-column {
   }
 
   // Textual labels for detailed metrics
-  body.embed .detailed-status__link > .fa-reply + span::after,
   .detailed-status__link > .icon-reply + span::after {
     color: var(--color-dim);
     content: "Replies";
     font-weight: var(--font-weight-semibold);
   }
 
-  body.embed .detailed-status__link > .fa-retweet + span::after,
   .detailed-status__link > .icon-retweet + span::after {
     color: var(--color-dim);
     content: "Boosts";
     font-weight: var(--font-weight-semibold);
   }
 
-  body.embed .detailed-status__link > .fa-star + span::after,
   .detailed-status__link > .icon-star + span::after {
     color: var(--color-dim);
     content: "Favourites";
     font-weight: var(--font-weight-semibold);
   }
 
-  body.embed .detailed-status__meta .detailed-status__link .fa-reply,
-  body.embed .detailed-status__meta .detailed-status__link .fa-star,
-  body.embed .detailed-status__meta .detailed-status__link .fa-retweet,
   .detailed-status__meta .detailed-status__link .icon-star,
   .detailed-status__meta .detailed-status__link .icon-retweet {
     display: none;
@@ -3179,7 +3111,6 @@ body.theme-mastodon-light.layout-single-column {
   }
 
   // Follow/unfollow button
-  body.embed .button.logo-button,
   .notification__report__actions .button,
   .column-inline-form button,
   .explore__suggestions .account-card__actions__button button,
@@ -3203,7 +3134,6 @@ body.theme-mastodon-light.layout-single-column {
   }
 
   // Dark button borders and other things that have borders all around
-  body.embed .button.logo-button,
   .notification__report__actions .button,
   .column-inline-form button,
   .explore__suggestions .account-card__actions__button button,
@@ -3239,7 +3169,6 @@ body.theme-mastodon-light.layout-single-column {
     width: 18px;
   }
 
-  body.embed .button.logo-button:hover,
   .column-inline-form button:hover,
   .explore__suggestions .account-card__actions__button button:hover,
   .account__header__buttons .icon-button.active {
@@ -4138,25 +4067,6 @@ body.theme-mastodon-light.layout-single-column {
     outline-style: solid;
   }
 
-  // Embeds outside Mastodon
-  body.embed {
-    background-color: #0e1014 !important;
-
-    // Make sure with !important
-    border: 0;
-    overflow: hidden !important;
-  }
-
-  body.embed .entry .detailed-status {
-    backface-visibility: hidden;
-    background-color: #00000059;
-    border: 0 !important;
-
-    // It's inlined so we have to use !important
-    border-radius: 0 !important;
-    overflow: hidden;
-  }
-
   // Destructive colors (For you -suggestions, users when focused to the follow button
   .button.logo-button.button--destructive:active,
   .button.logo-button.button--destructive:focus {
@@ -4776,6 +4686,157 @@ body.theme-mastodon-light.layout-single-column {
     to {
       opacity: 1;
       transform: translateY(0);
+    }
+  }
+
+  // Embeds - moved outside main selector for proper specificity
+  @at-root {
+    body.embed {
+      background-color: #0e1014 !important;
+      border: 0;
+      overflow: hidden !important;
+    }
+
+    body.embed .status__content a {
+      color: var(--color-accent);
+    }
+
+    body.embed .activity-stream .entry {
+      background-color: var(--color-bg);
+    }
+
+    body.embed .detailed-status {
+      background-color: transparent;
+    }
+
+    body.embed .detailed-status__display-avatar > img {
+      background-color: var(--color-bg);
+      border: 0;
+      border-radius: 50%;
+      box-shadow: rgb(255 255 255 / 3%) 0 0 2px inset;
+    }
+
+    body.embed .media-gallery__item.standalone img,
+    body.embed .video-player .media-gallery__preview {
+      object-fit: contain;
+    }
+
+    body.embed .status .audio-player,
+    body.embed .status .media-gallery,
+    body.embed .status .video-player,
+    body.embed .audio-player,
+    body.embed .media-gallery,
+    body.embed .media-gallery__gifv,
+    body.embed .media-gallery__preview,
+    body.embed .video-player {
+      margin-left: calc(var(--size-avatar) + var(--gap-default));
+    }
+
+    body.embed [data-component="Video"] > div {
+      aspect-ratio: unset !important;
+    }
+
+    body.embed .spoiler-button + .media-gallery__item > .media-gallery__preview {
+      margin-left: unset !important;
+      max-height: unset !important;
+      width: 100% !important;
+    }
+
+    body.embed .media-gallery__gifv,
+    body.embed .detailed-status .audio-player,
+    body.embed .detailed-status .media-gallery,
+    body.embed .detailed-status .media-gallery__gifv,
+    body.embed .detailed-status .media-gallery__preview,
+    body.embed .detailed-status .video-player {
+      margin-left: 0;
+    }
+
+    body.embed .detailed-status__link {
+      margin-left: 4px;
+      top: 0;
+    }
+
+    body.embed #mastodon-status {
+      overflow: hidden;
+    }
+
+    body.embed .detailed-status__meta {
+      color: var(--color-dim);
+      font-size: var(--font-size);
+      line-height: 1.5;
+    }
+
+    body.embed .detailed-status__reblogs,
+    body.embed .detailed-status__favorites {
+      color: var(--color-light-text);
+      display: inline-flex;
+      font-size: var(--font-size);
+      font-weight: var(--font-weight-bold);
+      gap: 4px;
+    }
+
+    body.embed .detailed-status__meta .animated-number {
+      color: var(--color-light-text);
+      font-weight: var(--font-weight-bold);
+    }
+
+    body.embed > .activity-stream {
+      backface-visibility: hidden;
+      background: #313543 !important;
+      border: 1px solid var(--color-border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    body.embed .detailed-status__link > .fa-reply + span::after {
+      color: var(--color-dim);
+      content: "Replies";
+      font-weight: var(--font-weight-semibold);
+    }
+
+    body.embed .detailed-status__link > .fa-retweet + span::after {
+      color: var(--color-dim);
+      content: "Boosts";
+      font-weight: var(--font-weight-semibold);
+    }
+
+    body.embed .detailed-status__link > .fa-star + span::after {
+      color: var(--color-dim);
+      content: "Favourites";
+      font-weight: var(--font-weight-semibold);
+    }
+
+    body.embed .detailed-status__meta .detailed-status__link .fa-reply,
+    body.embed .detailed-status__meta .detailed-status__link .fa-star,
+    body.embed .detailed-status__meta .detailed-status__link .fa-retweet {
+      display: none;
+    }
+
+    body.embed .button.logo-button {
+      background-color: transparent;
+      border: 1px solid var(--color-outer-space);
+      border-radius: 9999px;
+      color: var(--color-light-text);
+      font-size: var(--font-size);
+      max-width: 36vw;
+      overflow: hidden;
+      padding-left: 16px;
+      padding-right: 16px;
+      text-overflow: ellipsis;
+      transition: all 200ms;
+      white-space: nowrap;
+    }
+
+    body.embed .button.logo-button:hover {
+      color: var(--color-light-text);
+    }
+
+    body.embed .entry .detailed-status {
+      backface-visibility: hidden;
+      background-color: #00000059;
+      border: 0 !important;
+      border-radius: 0 !important;
+      overflow: hidden;
     }
   }
 }
