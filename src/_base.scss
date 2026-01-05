@@ -4667,27 +4667,6 @@ body.theme-mastodon-light.layout-single-column {
     }
   }
 
-  @media screen and (width >= 1175px) {
-    // Fade in list panel, thanks for the idea @nileane@nileane.fr! https://github.com/nileane/TangerineUI-for-Mastodon
-    .column-link[href="/lists"]:is(.active, :hover) + .list-panel,
-    .list-panel:hover {
-      animation: fadein 0.4s 1;
-    }
-  }
-
-  // Spare animations
-  @keyframes fadein {
-    from {
-      opacity: 0;
-      transform: translateY(-10%);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
   // Embeds - moved outside main selector for proper specificity
   @at-root {
     body.embed {

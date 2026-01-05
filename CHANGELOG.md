@@ -1,3 +1,7 @@
+### 4.0.0-alpha.0-2: 2026-01-05
+
+* Remove dead code: fade in list panels no longer functional
+
 ### 4.0.0-alpha.0-1: 2025-12-22
 
 * Make dev mode authentic by using only `data-user-theme` attribute instead of artificial `.mastodon-bird-ui` class
