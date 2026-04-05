@@ -50,6 +50,7 @@
 * Modularize empty column from _base.scss to _empty-column.scss #172
 * Modularize layout fixes from _base.scss to _layout-fixes.scss #172
 * Modularize DM indicators from _base.scss to _dm-indicators.scss #172
+* Modularize compose form from _base.scss to _compose-form.scss #172
 * Remove select hack as it it's fixed in upstream already, ref: https://github.com/mastodon/mastodon/issues/37332
 
 ### 4.0.0-alpha.0-4: 2026-01-24
