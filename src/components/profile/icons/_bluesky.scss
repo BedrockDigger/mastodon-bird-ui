@@ -6,7 +6,5 @@
   #{$field-list} > #{$field-item}:has(dd a[href*="bsky.social" i])::before {
     background-image: var(--icon-bluesky);
     content: "";
-    height: 18.5px;
-    width: 18.5px;
   }
 }

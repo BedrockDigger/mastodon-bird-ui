@@ -6,7 +6,5 @@
   #{$field-list} > #{$field-item}:has(dd a[href*="wordpress.org" i])::before {
     background-image: var(--icon-wordpress);
     content: "";
-    height: 18.5px;
-    width: 18.5px;
   }
 }

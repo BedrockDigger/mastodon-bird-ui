@@ -6,7 +6,5 @@
   #{$field-list} > #{$field-item}:has(dd a[href*="ko-fi.com" i])::before {
     background-image: var(--icon-kofi);
     content: "";
-    height: 18.5px;
-    width: 18.5px;
   }
 }

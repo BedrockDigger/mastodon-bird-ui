@@ -6,7 +6,5 @@
   #{$field-list} > #{$field-item}:has(dd a[href*="youtu.be" i])::before {
     background-image: var(--icon-youtube);
     content: "";
-    height: 18.5px;
-    width: 18.5px;
   }
 }

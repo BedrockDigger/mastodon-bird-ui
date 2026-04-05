@@ -5,8 +5,6 @@
   #{$field-list} > #{$field-item}:has(dd a[href*="friendica" i])::before {
     background-image: var(--icon-friendica);
     content: "";
-    height: 18.5px;
     transform: scale(0.9);
-    width: 18.5px;
   }
 }

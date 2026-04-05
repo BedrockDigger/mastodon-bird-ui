@@ -5,7 +5,5 @@
   #{$field-list} > #{$field-item}:has(dd a[href*="github.com" i])::before {
     background-image: var(--icon-github);
     content: "";
-    height: 18.5px;
-    width: 18.5px;
   }
 }
