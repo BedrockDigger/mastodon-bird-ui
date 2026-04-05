@@ -2283,6 +2283,10 @@ body.layout-single-column, body.layout-multiple-columns {
   content: "";
 }
 
+.layout-single-column [class*="_comp_badge__roleColored"], .layout-single-column [class*="_comp_badge__default"], .layout-multiple-columns [class*="_comp_badge__roleColored"], .layout-multiple-columns [class*="_comp_badge__default"] {
+  background-color: #0000;
+}
+
 .layout-single-column .search__icon .icon.active, .layout-multiple-columns .search__icon .icon.active {
   opacity: 1;
 }
