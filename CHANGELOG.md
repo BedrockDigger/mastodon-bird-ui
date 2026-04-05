@@ -1,4 +1,4 @@
-### [Unreleased]: 2026-04-05
+### 4.0.0-alpha.6: 2026-04-06
 
 * Fix translate button color not matching link color
 * Fix extra border-left showing up in mobile devices
@@ -6,72 +6,15 @@
 * Fix install scripts for mementomods-2026-02-21, Ref: https://github.com/mastodon/mastodon/pull/37612
 * Fix focusable background color standing out too much for account name
 * Fix install script for Mastodon 2026-03-21 `common.scss` removal
-* Modularize base variables from _base.scss to _variables-base.scss #172
-* Modularize high contrast variables from _base.scss to _variables-high-contrast.scss #172
-* Modularize iPad variables from _base.scss to _variables-ipad-landscape.scss #172
-* Modularize mobile variables from _base.scss to _variables-mobile.scss #172
+* Fully modularize `_base.scss` into 40+ focused module files ([#172](https://github.com/ronilaukkarinen/mastodon-bird-ui/issues/172))
 * Fix Browsersync CSS hot reload by stripping CSP headers from proxied responses
-* Modularize search #172
-* Modularize UI #172
-* Modularize body colors from _base.scss to _ui.scss #172
-* Modularize text and link colors from _base.scss to _text-colors.scss #172
-* Modularize logo from _base.scss to _logo.scss #172
-* Modularize typography from _base.scss to _typography.scss #172
-* Modularize modals from _base.scss to _modals.scss #172
-* Modularize list editor from _base.scss to _list-editor.scss #172
-* Modularize status cards and quote posts from _base.scss to _status-card.scss #172
-* Modularize announcements from _base.scss to _announcements.scss #172
-* Modularize dark panels from _base.scss to _dark-panels.scss #172
-* Modularize column header and borders from _base.scss to _column-header.scss #172
-* Modularize panel order from _base.scss to _panel-order.scss #172
-* Modularize accented items from _base.scss to _accented-items.scss #172
-* Modularize content warnings from _base.scss to _content-warnings.scss #172
-* Modularize color overrides from _base.scss to _color-overrides.scss #172
-* Modularize status from _base.scss to _status.scss #172
-* Modularize transparent panels from _base.scss to _transparent-panels.scss #172
-* Modularize avatars from _base.scss to _avatars.scss #172
-* Modularize hashtag bar from _base.scss to _hashtag-bar.scss #172
-* Modularize status layout from _base.scss to _status-layout.scss #172
-* Modularize media from _base.scss to _media.scss #172
-* Modularize detailed status from _base.scss to _detailed-status.scss #172
-* Modularize buttons and bars from _base.scss to _buttons-and-bars.scss #172
-* Modularize notifications from _base.scss to _notifications.scss #172
-* Modularize navigation panel from _base.scss to _navigation-panel.scss #172
-* Modularize follow button from _base.scss to _follow-button.scss #172
-* Modularize search and inputs from _base.scss to _search-and-inputs.scss #172
-* Modularize profile basics from _base.scss to profile/_profile-basics.scss #172
-* Modularize profile link layout from _base.scss to profile/_profile-link-layout.scss #172
-* Modularize profile platform icons from _base.scss to profile/_profile-platform-icons.scss #172
-* Modularize profile verified and joined from _base.scss to profile/_profile-verified.scss #172
-* Modularize profile header from _base.scss to profile/_profile-header.scss #172
-* Modularize search icon active from _base.scss to _search-icon-active.scss #172
-* Modularize follow recommendations from _base.scss to _follow-recommendations.scss #172
-* Modularize explore bio shade from _base.scss to _explore-bio-shade.scss #172
-* Modularize empty column from _base.scss to _empty-column.scss #172
-* Modularize layout fixes from _base.scss to _layout-fixes.scss #172
-* Modularize DM indicators from _base.scss to _dm-indicators.scss #172
-* Modularize compose form from _base.scss to _compose-form.scss #172
-* Modularize status action bar from _base.scss to _status-action-bar.scss #172
-* Modularize navigation ordering from _base.scss to _navigation-ordering.scss #172
-* Modularize icon replacements from _base.scss to _icon-replacements.scss #172
-* Modularize media border radius from _base.scss to _media-border-radius.scss #172
-* Modularize hide autoplay gifs from _base.scss to _hide-autoplay-gifs.scss #172
-* Modularize focus colors from _base.scss to _focus-colors.scss #172
-* Modularize destructive colors from _base.scss to _destructive-colors.scss #172
-* Modularize server banner from _base.scss to _server-banner.scss #172
-* Modularize threaded lines from _base.scss to _threaded-lines.scss #172
-* Modularize scrollbars from _base.scss to _scrollbars.scss #172
-* Modularize onboarding from _base.scss to _onboarding.scss #172
-* Modularize list panel from _base.scss to _list-panel.scss #172
-* Modularize mobile devices from _base.scss to layouts/_mobile.scss #172
-* Modularize embeds from _base.scss to _embeds.scss #172
-* Move remaining mobile fix to layouts/_mobile.scss and remove _base.scss #172
-* Support new profile page structure #183
-* Remove select hack as it it's fixed in upstream already, ref: https://github.com/mastodon/mastodon/issues/37332
-* Update Mastodon Bird UI theme tokens with latest design system tokens, Closes #184
-* Remove calendar icon for "Joined" field that are no longer in the new profile, Ref: #183
-* Style new `account_timeline_components_redesign__handleHelp`, Ref: #183
-* Fix profile button colors, Ref: #183
+* Support new profile page structure ([#183](https://github.com/ronilaukkarinen/mastodon-bird-ui/issues/183))
+* Update Mastodon Bird UI theme tokens with latest design system tokens ([#184](https://github.com/ronilaukkarinen/mastodon-bird-ui/issues/184))
+* Add platform icon detection using `a[href]` for new profile field structure
+* Style profile number fields, tabs, badges, pinned posts for new redesign
+* Fix profile button positioning and colors
+* Remove select hack as it is fixed in upstream already, ref: https://github.com/mastodon/mastodon/issues/37332
+* Fix install script for new profile subdirectories
 
 ### 4.0.0-alpha.0-4: 2026-01-24
 
