@@ -6,6 +6,7 @@
 * Fix install scripts for mementomods-2026-02-21, Ref: https://github.com/mastodon/mastodon/pull/37612
 * Fix focusable background color standing out too much for account name
 * Fix install script for Mastodon 2026-03-21 `common.scss` removal
+* Modularize base variables from _base.scss to _variables-base.scss #172
 
 ### 4.0.0-alpha.0-4: 2026-01-24
 

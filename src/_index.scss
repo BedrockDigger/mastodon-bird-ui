@@ -6,6 +6,7 @@
 @use "variables/tokens";
 
 // Base file (to be modularized)
+@use "variables-base";
 @use "base";
 
 // Components
