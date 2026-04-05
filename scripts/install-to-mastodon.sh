@@ -116,7 +116,6 @@ mkdir -p "$BIRD_UI_PATH/components"
 mkdir -p "$BIRD_UI_PATH/components/profile"
 mkdir -p "$BIRD_UI_PATH/components/profile/icons"
 mkdir -p "$BIRD_UI_PATH/layouts"
-mkdir -p "$BIRD_UI_PATH/legacy"
 mkdir -p "$BIRD_UI_PATH/micro-interactions"
 mkdir -p "$BIRD_UI_PATH/variables"
 mkdir -p "$BIRD_UI_PATH/variants"
@@ -160,11 +159,6 @@ for f in "$SRC_DIR/layouts/"_*.scss; do
   [ -f "$f" ] && copy_if_exists "$f" "$BIRD_UI_PATH/layouts/$(basename "$f")"
 done
 
-# Legacy layouts
-for f in "$SRC_DIR/legacy/"_*.scss; do
-  [ -f "$f" ] && copy_if_exists "$f" "$BIRD_UI_PATH/legacy/$(basename "$f")"
-done
-
 # Micro-interactions
 for f in "$SRC_DIR/micro-interactions/"_*.scss; do
   [ -f "$f" ] && copy_if_exists "$f" "$BIRD_UI_PATH/micro-interactions/$(basename "$f")"
@@ -198,12 +192,8 @@ ensure_entry_point() {
   local content="$2"
   local name
   name=$(basename "$file")
-  if [ ! -f "$file" ]; then
-    echo "$content" > "$file"
-    echo -e "  ${GREEN}Created:${NC} $name"
-  else
-    echo -e "  ${BLUE}Exists:${NC} $name"
-  fi
+  echo "$content" > "$file"
+  echo -e "  ${GREEN}Updated:${NC} $name"
 }
 
 # Core entry points (always needed)
@@ -212,7 +202,7 @@ ensure_entry_point "$STYLES_PATH/mastodon-bird-ui-dark.scss" "@use 'application'
 
 ensure_entry_point "$STYLES_PATH/mastodon-bird-ui-light.scss" "@use 'application';
 @use 'mastodon-bird-ui';
-@use 'mastodon-bird-ui/variables-light';"
+@use 'mastodon-bird-ui/variables/variables-light';"
 
 # Variation entry points
 if [[ "$ADD_VARIATIONS" =~ ^[Yy]$ ]]; then
@@ -252,18 +242,18 @@ EOF
 
   ensure_entry_point "$STYLES_PATH/mastodon-bird-ui-light-hide-finnish.scss" "@use 'application';
 @use 'mastodon-bird-ui';
-@use 'mastodon-bird-ui/variables-light';
+@use 'mastodon-bird-ui/variables/variables-light';
 @use 'mastodon-bird-ui/variants/hide-finnish';"
 
   ensure_entry_point "$STYLES_PATH/mastodon-bird-ui-light-hide-finnish-change-to-stars.scss" "@use 'application';
 @use 'mastodon-bird-ui';
-@use 'mastodon-bird-ui/variables-light';
+@use 'mastodon-bird-ui/variables/variables-light';
 @use 'mastodon-bird-ui/stars';
 @use 'mastodon-bird-ui/variants/hide-finnish';"
 
   ensure_entry_point "$STYLES_PATH/mastodon-bird-ui-light-hide-translate-links.scss" "@use 'application';
 @use 'mastodon-bird-ui';
-@use 'mastodon-bird-ui/variables-light';
+@use 'mastodon-bird-ui/variables/variables-light';
 @use 'mastodon-bird-ui/variants/hide-translate-links';"
 
   ensure_entry_point "$STYLES_PATH/mastodon-bird-ui-contrast.scss" "@use 'application';
