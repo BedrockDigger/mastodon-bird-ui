@@ -10,6 +10,7 @@
 * Modularize high contrast variables from _base.scss to _variables-high-contrast.scss #172
 * Modularize iPad variables from _base.scss to _variables-ipad-landscape.scss #172
 * Modularize mobile variables from _base.scss to _variables-mobile.scss #172
+* Fix Browsersync CSS hot reload by stripping CSP headers from proxied responses
 
 ### 4.0.0-alpha.0-4: 2026-01-24
 

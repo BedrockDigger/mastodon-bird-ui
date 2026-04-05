@@ -12,6 +12,12 @@ module.exports = {
     proxyOptions: {
       secure: false, // Allow self-signed certificates
     },
+    proxyRes: [
+      function (proxyRes) {
+        // Remove CSP header so Browsersync's injected script can run
+        delete proxyRes.headers['content-security-policy'];
+      },
+    ],
   },
   port: 3999,
   files: ['dist/*.css'],

@@ -11,6 +11,9 @@ const proxy = createProxyMiddleware({
   selfHandleResponse: true,
   on: {
     proxyRes: responseInterceptor(async (responseBuffer, proxyRes, req, res) => {
+      // Remove CSP header so Browsersync's injected script can run
+      res.removeHeader('content-security-policy');
+
       // Only modify HTML responses
       const contentType = proxyRes.headers['content-type'] || '';
       if (contentType.includes('text/html')) {
