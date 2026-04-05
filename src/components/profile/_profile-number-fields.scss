@@ -14,6 +14,7 @@
   [class*="_comp_number_fields__list"] {
     gap: 4px var(--gap-default);
     margin: 0;
+    margin-top: 16px;
     order: 5;
   }
 
@@ -22,7 +23,7 @@
     color: var(--color-dim);
     display: inline-flex;
     flex-direction: row-reverse;
-    font-size: var(--font-size);
+    font-size: var(--font-size-mid);
     gap: 4px;
   }
 
@@ -31,7 +32,7 @@
   [class*="_comp_number_fields__item"] strong {
     color: var(--color-light-text);
     display: inline;
-    font-size: var(--font-size);
-    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-mid);
+    font-weight: var(--font-weight-semibold);
   }
 }
