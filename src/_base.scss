@@ -6,11 +6,6 @@
 // Start base
 .layout-single-column,
 .layout-multiple-columns {
-  // Explore -> For you shade in bio
-  .scrollable .account-card__bio::after {
-    background: linear-gradient(270deg, var(--color-bg), transparent);
-  }
-
   // Empty column
   .empty-column-indicator {
     min-height: 120px;
