@@ -6,11 +6,6 @@
 // Start base
 .layout-single-column,
 .layout-multiple-columns {
-  // Misc UI fixes
-  .search__icon .icon.active {
-    opacity: 1;
-  }
-
   // Follow recommendations, "Who to follow" since Mastodon v4.3.0-alpha.1 (2024-02-01)
   .inline-follow-suggestions__body__scrollable__card .account__avatar {
     background-color: transparent;
