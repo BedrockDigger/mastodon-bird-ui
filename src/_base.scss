@@ -3,17 +3,6 @@
 // Updated for v4.6.0-alpha.3-2026-01-24 file-based theme system
 // See: https://github.com/ronilaukkarinen/mastodon-bird-ui/issues/177
 
-// Vars on iPad, landscape
-@media (width >= 1175px) and (width <= 1260px) {
-  :root {
-    --width-main-panel: 500px;
-    // stylelint-disable-next-line
-    --width-side-panel: 265px;
-    // stylelint-disable-next-line
-    --width-compose-panel: 265px;
-  }
-}
-
 // Vars in mobile
 @media (width <= 500px) {
   :root {
