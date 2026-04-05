@@ -2301,7 +2301,7 @@ body.layout-single-column, body.layout-multiple-columns {
 }
 
 .layout-single-column [class*="_comp_number_fields__list"], .layout-multiple-columns [class*="_comp_number_fields__list"] {
-  gap: 4px var(--gap-default);
+  gap: 4px calc(var(--gap-default) * 1.5);
   order: 5;
   margin: 16px 0 0;
 }
@@ -2309,15 +2309,18 @@ body.layout-single-column, body.layout-multiple-columns {
 .layout-single-column [class*="_comp_number_fields__item"], .layout-multiple-columns [class*="_comp_number_fields__item"] {
   color: var(--color-dim);
   font-size: var(--font-size-mid);
+  text-transform: lowercase;
   flex-direction: row-reverse;
   gap: 4px;
+  font-weight: 500;
   display: inline-flex;
 }
 
 .layout-single-column [class*="_comp_number_fields__item"] a, .layout-single-column [class*="_comp_number_fields__item"] strong, .layout-multiple-columns [class*="_comp_number_fields__item"] a, .layout-multiple-columns [class*="_comp_number_fields__item"] strong {
   color: var(--color-light-text);
   font-size: var(--font-size-mid);
-  font-weight: var(--font-weight-semibold);
+  text-transform: none;
+  font-weight: 700;
   display: inline;
 }
 
