@@ -1047,6 +1047,10 @@ body.layout-single-column, body.layout-multiple-columns {
   margin-bottom: 18px;
 }
 
+.layout-single-column .status__content p:last-child, .layout-single-column .edit-indicator__content p:last-child, .layout-single-column .reply-indicator__content p:last-child, .layout-multiple-columns .status__content p:last-child, .layout-multiple-columns .edit-indicator__content p:last-child, .layout-multiple-columns .reply-indicator__content p:last-child {
+  margin-bottom: 0;
+}
+
 .layout-single-column div[style*="aspect-ratio"]:not([class]), .layout-multiple-columns div[style*="aspect-ratio"]:not([class]) {
   aspect-ratio: unset !important;
 }
