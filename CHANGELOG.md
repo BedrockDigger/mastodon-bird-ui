@@ -7,6 +7,7 @@
 * Fix profile buttons staying at top right on all viewports
 * Adjust profile field font size and row gap for mobile under 700px
 * Fix threaded line content alignment
+* Fix profile spacing for familiar followers, number fields and field list
 
 ### 4.0.0-alpha.6: 2026-04-06
 

@@ -1972,7 +1972,7 @@ body.layout-single-column, body.layout-multiple-columns {
 .layout-single-column .account__header__bio dl[class*="fieldList"], .layout-multiple-columns .account__header__bio dl[class*="fieldList"] {
   gap: var(--gap-default);
   flex-wrap: wrap;
-  margin: 0;
+  margin: 0 0 20px;
   display: flex;
 }
 
@@ -2177,7 +2177,7 @@ body.layout-single-column, body.layout-multiple-columns {
 .layout-single-column [class*="_comp_number_fields__list"], .layout-multiple-columns [class*="_comp_number_fields__list"] {
   gap: 4px calc(var(--gap-default) * 1.5);
   order: 5;
-  margin: 20px 0 0;
+  margin: 0;
 }
 
 .layout-single-column [class*="_comp_number_fields__item"], .layout-multiple-columns [class*="_comp_number_fields__item"] {
@@ -2349,6 +2349,10 @@ body.layout-single-column, body.layout-multiple-columns {
 
 .layout-single-column [class*="_feat_account_edit__avatar"] > .account__avatar, .layout-multiple-columns [class*="_feat_account_edit__avatar"] > .account__avatar {
   border: 0;
+}
+
+.layout-single-column .account__header__familiar-followers, .layout-multiple-columns .account__header__familiar-followers {
+  margin-block: 0;
 }
 
 .layout-single-column .search__icon .icon.active, .layout-multiple-columns .search__icon .icon.active {
