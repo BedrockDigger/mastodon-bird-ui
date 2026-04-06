@@ -6,6 +6,7 @@
 * Fix profile header image height only on viewports above 760px
 * Fix profile buttons staying at top right on all viewports
 * Adjust profile field font size and row gap for mobile under 700px
+* Fix threaded line content alignment
 
 ### 4.0.0-alpha.6: 2026-04-06
 

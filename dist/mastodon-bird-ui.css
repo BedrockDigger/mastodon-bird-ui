@@ -3176,7 +3176,7 @@ body.layout-single-column, body.layout-multiple-columns {
 }
 
 .layout-single-column .status--in-thread .status__action-bar, .layout-single-column .status--in-thread .status__content, .layout-multiple-columns .status--in-thread .status__action-bar, .layout-multiple-columns .status--in-thread .status__content {
-  padding-left: 4px;
+  padding-left: 6px;
 }
 
 .layout-single-column ::-webkit-scrollbar {
