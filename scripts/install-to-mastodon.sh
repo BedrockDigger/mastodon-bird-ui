@@ -204,6 +204,21 @@ ensure_entry_point "$STYLES_PATH/mastodon-bird-ui-light.scss" "@use 'application
 @use 'mastodon-bird-ui';
 @use 'mastodon-bird-ui/variables/variables-light';"
 
+# Auto bundle - respects data-color-scheme attribute and prefers-color-scheme
+ensure_entry_point "$STYLES_PATH/mastodon-bird-ui-auto.scss" "@use 'application';
+@use 'mastodon-bird-ui';
+@use 'mastodon-bird-ui/variables/light-mixin' as light;
+
+[data-color-scheme=\"light\"] {
+  @include light.tokens;
+}
+
+@media (prefers-color-scheme: light) {
+  html:not([data-color-scheme]) {
+    @include light.tokens;
+  }
+}"
+
 # Variation entry points
 if [[ "$ADD_VARIATIONS" =~ ^[Yy]$ ]]; then
   echo ""
@@ -322,6 +337,7 @@ else
   add_theme_entry "mastodon-bird-ui-dark" "styles/mastodon-bird-ui-dark.scss"
 fi
 add_theme_entry "mastodon-bird-ui-light" "styles/mastodon-bird-ui-light.scss"
+add_theme_entry "mastodon-bird-ui-auto" "styles/mastodon-bird-ui-auto.scss"
 
 # Bird UI variations
 if [[ "$ADD_VARIATIONS" =~ ^[Yy]$ ]]; then
@@ -406,6 +422,8 @@ else
 fi
 add_locale_entry "$EN_LOCALE" "mastodon-bird-ui-light" "Mastodon Bird UI (Light)" "en.yml"
 add_locale_entry "$FI_LOCALE" "mastodon-bird-ui-light" "Mastodon Bird UI (vaalea)" "fi.yml"
+add_locale_entry "$EN_LOCALE" "mastodon-bird-ui-auto" "Mastodon Bird UI" "en.yml"
+add_locale_entry "$FI_LOCALE" "mastodon-bird-ui-auto" "Mastodon Bird UI" "fi.yml"
 
 # Variation locale entries
 if [[ "$ADD_VARIATIONS" =~ ^[Yy]$ ]]; then

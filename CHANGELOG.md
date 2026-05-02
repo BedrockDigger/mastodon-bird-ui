@@ -1,5 +1,6 @@
 ### [Unreleased]
 
+* Add `mastodon-bird-ui-auto` theme entry that responds to Mastodon's `data-color-scheme` attribute and falls back to `prefers-color-scheme: light`, so light/dark switching can be driven by the admin appearance radios instead of separate per-scheme themes, ref https://github.com/rollecode/mastodon-bird-ui/issues/182
 * Refactor `:is()` complex selector in mobile sign-out CSS to plain comma list so PostCSS no longer emits "Complex selectors" warnings during Mastodon's Vite build, Closes https://github.com/rollecode/mastodon-bird-ui/issues/178
 * Fix star icon and counter alignment in the action bar when reduce-motion is enabled, and ungate sparkle and ring pseudo-element animations so they fire in both motion modes, Closes https://github.com/rollecode/mastodon-bird-ui/issues/149
 
