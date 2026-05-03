@@ -1,11 +1,12 @@
 ### 4.0.0-alpha.8.rc: 2026-05-03
 
-* Drop the redundant `mastodon-bird-ui-dark`, `mastodon-bird-ui-light`, and `mastodon-bird-ui-contrast` theme entries from `install-to-mastodon.sh`. Mastodon's built-in Appearance radios (color scheme + contrast) drive these via the auto bundle, so the separate theme entries duplicated the dropdown, ref https://github.com/rollecode/mastodon-bird-ui/issues/182
-* Stop generating the stars, hide-finnish, hide-translate-links, and combination theme entries (light-stars, light-hide-finnish, accessible-hide-finnish, etc.) in `install-to-mastodon.sh`. Mastodon fork users can now toggle these as user preferences in the Appearance settings instead, and the standalone SCSS sources stay available in `src/` for Custom CSS users who still want to compile a forced bundle.
-* Add `mastodon-bird-ui-auto` theme entry that responds to Mastodon's `data-color-scheme` attribute and falls back to `prefers-color-scheme: light`, so light/dark switching can be driven by the admin appearance radios instead of separate per-scheme themes, ref https://github.com/rollecode/mastodon-bird-ui/issues/182
-* Refactor `:is()` complex selector in mobile sign-out CSS to plain comma list so PostCSS no longer emits "Complex selectors" warnings during Mastodon's Vite build, Closes https://github.com/rollecode/mastodon-bird-ui/issues/178
-* Migration note: users who had selected one of the removed theme entries fall back to the default Mastodon Bird UI auto theme without crashing (Mastodon's `current_theme` helper validates against the available list). They can re-pick the theme and use Mastodon's Color Scheme + Contrast radios to lock in the previous look.
-* Fix star icon and counter alignment in the action bar when reduce-motion is enabled, and ungate sparkle and ring pseudo-element animations so they fire in both motion modes, Closes https://github.com/rollecode/mastodon-bird-ui/issues/149
+* Add `mastodon-bird-ui-auto` theme that responds to `data-color-scheme` and `prefers-color-scheme`, ref #182
+* Drop redundant Dark, Light, and Contrast theme entries (the auto bundle covers them via Mastodon's Appearance radios), ref #182
+* Stop generating stars, hide-finnish, hide-translate-links, and combination theme entries (toggleable on forks or via Custom CSS)
+* Rename vanilla Mastodon theme label to "Mastodon" (key unchanged for back-compat)
+* Refactor `:is()` in mobile sign-out CSS to comma list to silence PostCSS Complex selectors warning, Closes #178
+* Fix star icon alignment with reduce-motion and ungate sparkle pseudo-element animations, Closes #149
+* Users on removed themes fall back to default Mastodon Bird UI auto without crashing
 
 ### 4.0.0-alpha.7: 2026-05-02
 

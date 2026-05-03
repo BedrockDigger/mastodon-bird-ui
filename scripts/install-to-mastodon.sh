@@ -330,8 +330,8 @@ add_locale_entry() {
 # Core theme locale entries
 if [[ "$SET_DEFAULT" =~ ^[Yy]$ ]]; then
   # Bird UI is default, so add locale for the stock Mastodon theme
-  add_locale_entry "$EN_LOCALE" "mastodon-dark" "Mastodon (Dark)" "en.yml"
-  add_locale_entry "$FI_LOCALE" "mastodon-dark" "Mastodon (tumma)" "fi.yml"
+  add_locale_entry "$EN_LOCALE" "mastodon-dark" "Mastodon" "en.yml"
+  add_locale_entry "$FI_LOCALE" "mastodon-dark" "Mastodon" "fi.yml"
 else
   add_locale_entry "$EN_LOCALE" "mastodon-bird-ui-auto" "Mastodon Bird UI" "en.yml"
   add_locale_entry "$FI_LOCALE" "mastodon-bird-ui-auto" "Mastodon Bird UI" "fi.yml"
