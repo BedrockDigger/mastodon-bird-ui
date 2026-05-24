@@ -1422,6 +1422,10 @@ body.layout-single-column, body.layout-multiple-columns {
   visibility: hidden;
 }
 
+.layout-single-column .navigation-panel__menu > li, .layout-multiple-columns .navigation-panel__menu > li {
+  width: 100%;
+}
+
 .layout-single-column .navigation-panel__logo hr, .layout-multiple-columns .navigation-panel__logo hr {
   margin: 0;
 }

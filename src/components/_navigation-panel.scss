@@ -16,6 +16,13 @@
     visibility: hidden;
   }
 
+  // Upstream PR mastodon#39145 wrapped each nav item in an <li>. The menu is a
+  // flex-wrap container, so the list items need to be full width to keep
+  // stacking vertically instead of flowing side by side.
+  .navigation-panel__menu > li {
+    width: 100%;
+  }
+
   .navigation-panel__logo hr {
     margin: 0;
   }

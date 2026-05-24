@@ -4,6 +4,7 @@
 * Restore even profile tab distribution at all viewport widths
 * Add explicit `margin-bottom: 16px` on familiar followers under the new module class so spacing stays consistent when no role badges are rendered
 * Override `object-fit` to `cover` on video previews when a content warning placeholder is shown, so portrait videos no longer letterbox the spoiler image
+* Fix main navigation items appearing side by side after upstream wrapped them in list items, Closes #187
 
 ### 4.0.0-alpha.8.rc: 2026-05-03
 
