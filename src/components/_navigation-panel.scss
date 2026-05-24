@@ -23,6 +23,11 @@
     width: 100%;
   }
 
+  // Hide the list-item separators that replaced the old <hr> elements.
+  .navigation-panel__menu > li[role="separator"] {
+    display: none;
+  }
+
   .navigation-panel__logo hr {
     margin: 0;
   }

@@ -1426,6 +1426,10 @@ body.layout-single-column, body.layout-multiple-columns {
   width: 100%;
 }
 
+.layout-single-column .navigation-panel__menu > li[role="separator"], .layout-multiple-columns .navigation-panel__menu > li[role="separator"] {
+  display: none;
+}
+
 .layout-single-column .navigation-panel__logo hr, .layout-multiple-columns .navigation-panel__logo hr {
   margin: 0;
 }
