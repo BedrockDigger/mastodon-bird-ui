@@ -14,6 +14,14 @@
     }
   }
 
+  @media screen and (height < 1080px) {
+    // Compact navigation items so more fit on shorter laptop screens.
+    .column-link {
+      --gap-column-link: 7px;
+      font-size: 17px;
+    }
+  }
+
   @media screen and (width >= 760px) {
     // Hide the space between Lists and the actual lists
     .list-panel > hr,

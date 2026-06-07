@@ -1,3 +1,7 @@
+### [Unreleased]
+
+* Compact the navigation items (font-size 17px, gap 7px) on screen heights below 1080px
+
 ### 4.0.0-beta.1.rc: 2026-06-07
 
 * Tighten badge spacing in account list items (override core padding on all badges, nudge Follows you down)
