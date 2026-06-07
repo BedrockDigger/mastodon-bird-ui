@@ -1,5 +1,6 @@
 ### [Unreleased]
 
+* Tighten badge spacing in account list items (override core padding on all badges, nudge Follows you down)
 * Style the verified link badge in account list items (e.g. collections) the same as profile field verified links
 * Style the Follows you badge in account list items (e.g. collections) the same as in profiles
 * Show the Collections nav icon (was hidden by the column-link icon path reset)
