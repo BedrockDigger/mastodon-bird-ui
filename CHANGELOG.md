@@ -1,5 +1,6 @@
 ### [Unreleased]
 
+* Add z-index to status display name so the avatar follow badge stays clickable
 * Drop trends to 2 items on screen heights below 1080px
 * Remove the trends section top margin
 * Make the navigation menu scrollbar minimal (Firefox thin, WebKit 4px) to match the Bird UI aesthetic
