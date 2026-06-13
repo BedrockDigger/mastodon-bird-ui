@@ -15,7 +15,7 @@
   @keyframes glyph{0%{transform:scale(1)}10%{transform:scale(0)}28%{transform:scale(0)}55%{transform:scale(1.2)}72%{transform:scale(.92)}100%{transform:scale(1)}}
 
   /* burst is absolute, centred on the icon, BEHIND the count (z-index 1 < count 3), pointer-events none -> never displaces or hides the number */
-  .burst{position:absolute;left:50%;top:50%;width:64px;height:64px;transform:translate(-50%,-50%);pointer-events:none;z-index:1;overflow:visible}
+  .burst{position:absolute;left:50%;top:50%;width:46px;height:46px;transform:translate(-50%,-50%);pointer-events:none;z-index:1;overflow:visible}
   .flashring,.grp{transform-box:fill-box;transform-origin:center;opacity:0}.flashring{fill:none}
   .activate .flashring{animation:fr .52s ease-out forwards}
   @keyframes fr{0%{transform:scale(.3);opacity:1;stroke-width:90;stroke:#dd4688}45%{transform:scale(1);opacity:1;stroke-width:86;stroke:#cc8ef5}100%{transform:scale(1.3);opacity:0;stroke-width:0}}
@@ -54,6 +54,6 @@
     counts.forEach(function(c){document.getElementById('darkpane').appendChild(build('heart',HEART,c));});
     counts.forEach(function(c){document.getElementById('lightpane').appendChild(build('star',STAR,c));});
     function go(){document.querySelectorAll('.btn').forEach(function(b){b.classList.remove('activate');void b.offsetWidth;b.classList.add('activate');});}
-    document.querySelectorAll('.btn').forEach(function(b){b.addEventListener('click',go)});go();
+    document.querySelectorAll('.btn').forEach(function(b){b.addEventListener('click',function(){b.classList.remove('activate');void b.offsetWidth;b.classList.add('activate');});});go();
   </script>
 </body></html>
