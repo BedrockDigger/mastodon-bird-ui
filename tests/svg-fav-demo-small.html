@@ -18,15 +18,15 @@
   .burst{position:absolute;left:50%;top:50%;width:46px;height:46px;transform:translate(-50%,-50%);pointer-events:none;z-index:1;overflow:visible}
   .flashring,.grp{transform-box:fill-box;transform-origin:center;opacity:0}.flashring{fill:none}
   .activate .flashring{animation:fr .52s ease-out forwards}
-  @keyframes fr{0%{transform:scale(.3);opacity:1;stroke-width:90;stroke:#dd4688}45%{transform:scale(1);opacity:1;stroke-width:86;stroke:#cc8ef5}100%{transform:scale(1.3);opacity:0;stroke-width:0}}
-  @keyframes frs{0%{transform:scale(.3);opacity:1;stroke-width:46}45%{transform:scale(1);opacity:1;stroke-width:44}100%{transform:scale(1.25);opacity:0;stroke-width:0}}
+  @keyframes fr{0%{transform:scale(.3);opacity:1;stroke-width:90;stroke:#dd4688}24%{transform:scale(1);opacity:1;stroke-width:84;stroke:#cc8ef5}33%{transform:scale(1.06);opacity:1;stroke-width:7}100%{transform:scale(1.45);opacity:0;stroke-width:0}}
+  @keyframes frs{0%{transform:scale(.3);opacity:1;stroke-width:46}18%{transform:scale(1);opacity:1;stroke-width:44}27%{transform:scale(1.05);opacity:1;stroke-width:5}100%{transform:scale(1.25);opacity:0;stroke-width:0}}
   .heart .flashring{stroke:#cc8ef5}.star .flashring{stroke:#ffa017}.star.activate .flashring{animation-name:frs}
   .activate .w1{animation:burst .5s ease-out .15s forwards}
   .activate .w2{animation:burst .5s ease-out .24s forwards}
   @keyframes burst{0%{transform:scale(0);opacity:1}65%{opacity:1}100%{transform:scale(1.05);opacity:0}}
-  .activate .srays{animation:srays .34s ease-out .06s forwards}
-  @keyframes srays{0%{transform:scale(.3);opacity:0}25%{opacity:1}100%{transform:scale(1);opacity:0}}
-  .activate .sballs{animation:burst .42s ease-out .26s forwards}
+  .activate .srays{animation:srays .36s ease-out .08s forwards}
+  @keyframes srays{0%{transform:scale(.5);opacity:0}30%{transform:scale(1);opacity:1}60%{opacity:1}100%{transform:scale(1.1);opacity:0}}
+  .activate .sballs{animation:burst .4s ease-out .3s forwards}
   .replay{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#313543;color:#fff;border:0;padding:10px 16px;border-radius:6px;cursor:pointer;z-index:9}
 </style></head><body>
   <div class="pane dark" id="darkpane"></div>
