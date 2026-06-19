@@ -1,3 +1,188 @@
+### 4.0.0: 2026-06-19
+
+* Compatible with Mastodon 4.6.0 stable and 4.7.0-alpha.1
+* Detect a native favourite animation and leave the favourite button alone so the fork's own star/heart shows (mementomori-social/mastodon#10)
+* Hide the native search clear glyph so only the Bird UI X shows, not a second white one
+* Remove the border from the stuck mobile profile buttons bar
+* Raise account timeline filters above the profile header
+* Raise visible status text above the display name so the first row stays clickable
+* Use the solid secondary background for the avatar follow badge hover
+* Cap dropdown menus to the viewport height and make them scrollable on short or zoomed screens
+* Add z-index to status display name so the avatar follow badge stays clickable
+* Drop trends to 2 items on screen heights below 830px (4 items fit above that)
+* Remove the trends section top margin
+* Make the navigation menu scrollbar minimal (Firefox thin, WebKit 4px) to match the Bird UI aesthetic
+* Compact the navigation items (font-size 17px, gap 7px) on screen heights below 1080px
+
+### 4.0.0-beta.1.rc: 2026-06-07
+
+* Tighten badge spacing in account list items (override core padding on all badges, nudge Follows you down)
+* Style the verified link badge in account list items (e.g. collections) the same as profile field verified links
+* Style the Follows you badge in account list items (e.g. collections) the same as in profiles
+* Show the Collections nav icon (was hidden by the column-link icon path reset)
+* Move Notifications to the second slot in the navigation menu
+* Remove border-bottom from the trends heading
+
+### 4.0.0-alpha.8.rc2: 2026-05-24
+
+* Hide the follows-you badge icon and nudge the badge with transform translate(-1px, 1px) for alignment
+* Scope the larger 133.5px profile avatar to viewports 760px and up so mobile keeps the smaller size
+* Restore navigation menu order after upstream wrapped items in list elements: Lists and Followed tags sit at the bottom with More last
+* Adapt profile styles to the new account_header module classes and restore avatar size, badge spacing, and bar layout after upstream removed the old classes in #38920
+* Update profile tabs, name, avatar wrapper, badges, handle help, and familiar followers selectors to the new `_comp_account_header__*` and `_comp_tab_list__*` module classes (upstream rename in #38863)
+* Restore even profile tab distribution at all viewport widths
+* Add explicit `margin-bottom: 16px` on familiar followers under the new module class so spacing stays consistent when no role badges are rendered
+* Override `object-fit` to `cover` on video previews when a content warning placeholder is shown, so portrait videos no longer letterbox the spoiler image
+* Fix main navigation items appearing side by side after upstream wrapped them in list items, Closes #187
+* Hide the navigation list-item separators that replaced the old `hr` elements
+* Reduce navigation panel right padding to 10px so long menu labels fit better
+
+### 4.0.0-alpha.8.rc: 2026-05-03
+
+* Add `mastodon-bird-ui-auto` theme that responds to `data-color-scheme` and `prefers-color-scheme`, ref #182
+* Drop redundant Dark, Light, and Contrast theme entries (the auto bundle covers them via Mastodon's Appearance radios), ref #182
+* Stop generating stars, hide-finnish, hide-translate-links, and combination theme entries (toggleable on forks or via Custom CSS)
+* Rename vanilla Mastodon theme label to "Mastodon" (key unchanged for back-compat)
+* Refactor `:is()` in mobile sign-out CSS to comma list to silence PostCSS Complex selectors warning, Closes #178
+* Fix star icon alignment with reduce-motion and ungate sparkle pseudo-element animations, Closes #149
+* Users on removed themes fall back to default Mastodon Bird UI auto without crashing
+
+### 4.0.0-alpha.7: 2026-05-02
+
+* Fix duplicate profile buttons after upstream class name change while keeping desktop buttons positioned at top right of the header bar, Closes #185
+* Remove padding-top from `account__header__buttons` on viewports under 420px
+* Apply `--font-size` variable to various elements that are hardcoded in pixels, so accessible themes scale up those font sizes
+* Fix inconsistent private mention styles between conversations and notifications, Closes #181
+* Add border-bottom to `follow_requests-unlocked_explanation`
+* Fix profile buttons and number fields on mobile under 420px
+* Fix profile header image height only on viewports above 760px
+* Fix profile buttons staying at top right on all viewports
+* Adjust profile field font size and row gap for mobile under 700px
+* Fix threaded line content alignment
+* Fix profile spacing for familiar followers, number fields and field list
+* Fix status content paragraph margin-bottom to 18px
+* Fix dropdown menu button hover and focus background color
+* Use font size and line height variables for accessible theme compatibility
+* Map `--color-text-brand` to `--color-accent` for consistent link colors
+* Fix profile badge and username spacing
+
+### 4.0.0-alpha.6: 2026-04-06
+
+* Fix translate button color not matching link color
+* Fix extra border-left showing up in mobile devices
+* Lint build for 4.6.0-alpha.3
+* Fix install scripts for mementomods-2026-02-21, Ref: https://github.com/mastodon/mastodon/pull/37612
+* Fix focusable background color standing out too much for account name
+* Fix install script for Mastodon 2026-03-21 `common.scss` removal
+* Fully modularize `_base.scss` into 40+ focused module files #172
+* Fix Browsersync CSS hot reload by stripping CSP headers from proxied responses
+* Support new profile page structure #183
+* Remove calendar icon for "Joined" field that are no longer in the new profile, Ref: #183
+* Style new `account_timeline_components_redesign__handleHelp`, Ref: #183
+* Fix profile button colors, Ref: #183
+* Update Mastodon Bird UI theme tokens with latest design system tokens, Closes #184
+* Remove select hack as it is fixed in upstream already, ref: https://github.com/mastodon/mastodon/issues/37332
+* Fix install script for new profile subdirectories
+* Fix trends item name layout for new structure
+* Remove border from profile edit avatar
+
+### 4.0.0-alpha.0-4: 2026-01-24
+
+* Migrate to Mastodon v4.6.0-alpha.3-2026-01-24 file-based theme system ([#177](https://github.com/ronilaukkarinen/mastodon-bird-ui/issues/177), [mastodon#37477](https://github.com/mastodon/mastodon/pull/37477))
+* Replace `data-user-theme` and `body.theme-*` selectors with `:root`, `html[data-color-scheme]`, `html[data-contrast]` ([mastodon#37523](https://github.com/mastodon/mastodon/pull/37523))
+* Add v4.6.0 semantic token overrides for light theme
+
+### 4.0.0-alpha.0-3: 2026-01-11
+
+* Remove dead code: fade in list panels no longer functional
+* Remove CSS properties and icons that are no longer in use since Mastodon 4.2 (replaced by buttons and drop downs, deprecated in older versions, etc.): `--icon-share-detailed-status-action-bar`, `--color-light-fuchsia-pink`, `--icon-follow-hashtag', `--icon-unfollow-hashtag`, `--icon-star`, `--icon-share`, _`--compose-form-linear-gradient`. `--active-header-box-shadow`, `--icon-users-column-link`, `--icon-plus-red`, `--icon-cross-green`, `--icon-cog`, `--icon-genderless-pronouns`, `--icon-verified`
+* Make dev mode authentic by using only `data-user-theme` attribute instead of artificial `.mastodon-bird-ui` class
+* BrowserSync conf improvements
+* Split legacy/ to base.scss and start modularization work
+* Add layouts/_advanced-web-interface.scss
+* Upgrade stylelint to v16
+* Add `stylelint-value-no-unknown-custom-properties` to detect undefined CSS custom properties
+* Add custom `plugin/no-unused-custom-properties` to detect unused CSS custom properties
+* Fix accessible theme background not applying due to nested body selector losing specificity
+* Fix hide-finnish and hide-translate-links variant selectors to match updated Mastodon HTML structure
+* Add `--color-text-brand` override for all themes to use Bird UI accent colors
+* Fix .compose-form__warning styles
+* Fix issue with image margin in compose form media item
+* Move all body.embed rules outside main selector with @at-root
+* Advanced web interface: Slimmer drawer selections in 4.6.0+
+* Release install-to-mastodon.sh workflow
+* Fix styles leaking to admin
+* Improve install script, add y/n for variations and default theme
+* Fix install script breaking existing Mastodon installations by auto-detecting update vs new install mode
+* Add --no-optimize to Parcel so Custom CSS users can have unminified CSS
+* Further improve workflow for indexes that both MastoAdmin install script and the SCSS structure use
+* Fix styles for .button--plain
+* Support Wrapstodon
+* Migrate accessible themes as part of mastodon-bird-ui instead of just README.md snippets
+* Fix video under text layer while scrolling, Fixes #173
+* Fix npm run:<variation> browsersync scripts
+
+### 4.0.0rc3: 2025-12-20
+
+* Revert and rewrite over-engineered modularization
+* Components override for Mastodon v4.6.0+, disable top border/padding for tabs-bar wrapper
+* Fixes to placeholder styles
+* Add `npm run dev:mementomods` to test styles against mementomori.social
+* Add `npm run dev:mastodon` to test against mastodon.social
+* Start proper modularization based on Mastodon core
+
+### 4.0.0rc2: 2025-12-13
+
+* Add unified `mastodon-bird-ui.scss` entry point for both layouts
+* Rename `_multiple-columns-styles.scss` to `_advanced-web-interface.scss`
+* Add `build:custom-css` and `build:mastodon-core` npm scripts
+* Add theme variants: accessible, accessible-plus, stars, hide-finnish, hide-translate-links
+* Add `scripts/install-to-mastodon.sh` for Mastodon core installation
+* Migrate to Mastodon v4.6.0+ semantic token system
+* Create `src/common/theme/` with `_base.scss`, `_dark.scss`, `_light.scss`, `_utils.scss`
+* Replace old custom CSS variables with Mastodon semantic tokens throughout codebase
+* Add support for `prefers-color-scheme` system theme preference
+* Add support for high contrast mode overrides
+* Fix unwanted `border-top` on `.tabs-bar__wrapper` introduced in Mastodon v4.6.0
+* Update stylelint config for SCSS support
+* Add `scss/comment-no-loud` rule to enforce SCSS-style comments
+* Convert all CSS comments to SCSS comments
+* Add `lint:watch` to dev workflow for real-time linting
+* Update GitHub workflow to use npm scripts and build process
+* Split CSS custom properties into modular files
+* Fixes to heart position
+* Update README.md installation instructions for unified build output
+
+### 4.0.0rc: 2025-11-30
+
+This is a major rewrite of the project architecture. The codebase has been completely modularized from 11,600+ lines of plain CSS into a structured SCSS architecture with proper build tooling. See [#172](https://github.com/ronilaukkarinen/mastodon-bird-ui/issues/172) for details.
+
+#### Build system
+
+* Add Parcel bundler for SCSS compilation
+* Add Browsersync for live development with CSS hot-reloading
+* Add npm scripts for development workflow (`npm run dev`, `npm run build`)
+* Add automatic version banner injection from package.json to built CSS
+
+#### Architecture
+
+* Migrate from plain CSS to modular SCSS with `@use` imports
+* Create `src/` directory structure with organized partials:
+  * `src/common/` - Variables, themes (dark, light, high-contrast)
+  * `src/components/` - UI components (buttons, cards, navigation, status, etc.)
+  * `src/layouts/` - Layout-specific styles (multiple columns)
+* Extract CSS custom properties into dedicated `_variables.scss`
+* Maintain single-file CSS output in `dist/` for backward compatibility
+
+#### For users
+
+* Installation method remains unchanged - copy CSS from `dist/` folder
+* Output CSS files are functionally identical to previous versions
+
+### 4.0.0rc1: 2025-11-09
+
+* Fix .announcements__root background-color in v4.6.0-alpha.1+2025-11-09
+
 ### 3.0.0: 2025-11-07
 
 * Bump version for Mastodon v4.5.0 stable

@@ -1,5 +1,10 @@
+.claude
+scripts/CLAUDE.md
+src/CLAUDE.md
+.github/workflows/CLAUDE.md
 .zed
 .cursor
 node_modules
 package-lock.json
 temp.css
+.parcel-cache
